@@ -1,0 +1,73 @@
+[{
+  "id": "hoffman-v60",
+  "name": "James Hoffmann's V60 Recipe",
+  "method": "pourover",
+  "baseServings": 2,
+  "baseDose": 30,
+  "baseWater": 500,
+  "grind": "Medium fine",
+  "waterTemp": 100,
+  "description": "James Hoffmann's two-cup v60 technique.",
+  "steps": [
+    {
+      "label": "Bloom",
+      "duration": 45,
+      "waterAmount": 60,
+      "instruction": "Pour twice the dose weight in water. Spiral pour from the centre outwards. Swirl the brewer until the mixture is even. Let bloom."
+    },
+    {
+      "label": "First pour",
+      "duration": 30,
+      "waterAmount": 240,
+      "instruction": "Pour slowly from centre outwards and then concentrically"
+    },
+    {
+      "label": "Second pour",
+      "duration": 30,
+      "waterAmount": 200,
+      "instruction": "Pour concentrically until you reach the total. Give the slurry a gentle swirl."
+    },
+    {
+      "label": "Drawdown",
+      "duration": 75,
+      "instruction": "Wait until the coffee has fully drained."
+    }
+  ]
+},
+{
+  "id": "wuggy-french-press",
+  "name": "Wuggy's French Press Recipe",
+  "method": "french_press",
+  "baseDoseGrams": 30,
+  "baseWaterMl": 500,
+  "description": "Wuggy's French Press method.",
+  "source": "Ari-Matti Toivonen",
+  "steps": [
+    {
+      "label": "Pour",
+      "durationSeconds": 15,
+      "waterAmount": 500,
+      "instruction": "Pour all the water over the grounds."
+    },
+    {
+      "label": "Steep",
+      "durationSeconds": 240,
+      "instruction": "Do nothing. Let it sit with the lid off."
+    },
+    {
+      "label": "Plunge crust",
+      "durationSeconds": 30,
+      "instruction": "Break the crust with a plunger, gently. Don't plunge all the way."
+    },
+    {
+      "label": "Wait",
+      "durationSeconds": 300,
+      "instruction": "Let the coffee brew."
+    },
+    {
+      "label": "Plunge & pour",
+      "durationSeconds": 15,
+      "instruction": "Press the plunger gently and slowly."
+    }
+  ]
+}]
