@@ -1,4 +1,4 @@
-type BrewStep = {
+export type BrewStep = {
     label: String;
     duration: number;
     waterAmount?: number; // ml - absent for wait steps
@@ -7,7 +7,7 @@ type BrewStep = {
 
 type BrewMethod = 'pourover' | 'aeropress' | 'french_press';
 
-type Recipe = {
+export type Recipe = {
     id: string;
     name: string;
     method: BrewMethod;
@@ -21,7 +21,7 @@ type Recipe = {
     steps: BrewStep[];
 }
 
-type BrewLogEntry = {
+export type BrewLogEntry = {
     id: string;
     recipeId: string;
     userId: string;
