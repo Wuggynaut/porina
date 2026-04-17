@@ -1,35 +1,79 @@
 [{
   "id": "hoffman-v60",
   "name": "James Hoffmann's V60 Recipe",
+  "source": "James Hoffmann",
+  "description": "James Hoffmann's v60 technique.",
   "method": "pourover",
   "baseServings": 2,
-  "baseDose": 30,
-  "baseWater": 500,
+  "baseDoseGrams": 30,
+  "baseWaterMl": 500,
   "grind": "Medium fine",
-  "waterTemp": 100,
-  "description": "James Hoffmann's two-cup v60 technique.",
+  "waterTempCelsius": 100,
   "steps": [
     {
       "label": "Bloom",
-      "duration": 45,
-      "waterAmount": 60,
+      "durationSeconds": 45,
+      "waterMl": 60,
       "instruction": "Pour twice the dose weight in water. Spiral pour from the centre outwards. Swirl the brewer until the mixture is even. Let bloom."
     },
     {
       "label": "First pour",
-      "duration": 30,
-      "waterAmount": 240,
-      "instruction": "Pour slowly from centre outwards and then concentrically"
+      "durationSeconds": 30,
+      "waterMl": 240,
+      "instruction": "Pour slowly from centre outwards and then concentrically."
     },
     {
       "label": "Second pour",
-      "duration": 30,
-      "waterAmount": 200,
+      "durationSeconds": 30,
+      "waterMl": 200,
       "instruction": "Pour concentrically until you reach the total. Give the slurry a gentle swirl."
     },
     {
       "label": "Drawdown",
-      "duration": 75,
+      "durationSeconds": 75,
+      "instruction": "Wait until the coffee has fully drained."
+    }
+  ]
+},
+{
+  "id": "kasuya-46",
+  "name": "Tetsu Kasuya's 4:6 Method",
+  "source": "Tetsu Kasuya",
+  "description": "Tetsu Kasuya's 4:6 method. This medium variant uses equal first pours for balanced acidity/sweetness, and two second pours for medium strength.",
+  "method": "pourover",
+  "baseServings": 1,
+  "baseDoseGrams": 20,
+  "baseWaterMl": 300,
+  "grind": "Coarse",
+  "waterTempCelsius": 92,
+  "steps": [
+    {
+      "label": "First pour",
+      "durationSeconds": 45,
+      "waterMl": 60,
+      "instruction": "Spiral pour from the centre outwards and back to the centre to wet all the coffee. Wait until the water drains."
+    },
+    {
+      "label": "Second pour",
+      "durationSeconds": 45,
+      "waterMl": 60,
+      "instruction": "Spiral pour from the centre outwards and back to the centre. Wait until the water drains."
+    },
+    {
+      "label": "Third pour",
+      "durationSeconds": 45,
+      "waterMl": 90,
+      "instruction": "Spiral pour from the centre outwards and back to the centre. Wait until the water drains."
+    },
+    {
+      "label": "Fourth pour",
+      "durationSeconds": 45,
+      "waterMl": 90,
+      "instruction": "Final pour to reach the total water amount. Wait until the water drains."
+    },
+    {
+      "label": "Drawdown",
+      "durationSeconds": 60,
       "instruction": "Wait until the coffee has fully drained."
     }
   ]
@@ -37,16 +81,19 @@
 {
   "id": "wuggy-french-press",
   "name": "Wuggy's French Press Recipe",
+  "source": "Ari-Matti Toivonen",
+  "description": "Wuggy's French Press method.",
   "method": "french_press",
   "baseDoseGrams": 30,
   "baseWaterMl": 500,
-  "description": "Wuggy's French Press method.",
-  "source": "Ari-Matti Toivonen",
+  "baseServings": 2,
+  "grind": "Coarse",
+  "waterTempCelsius": 98,
   "steps": [
     {
       "label": "Pour",
       "durationSeconds": 15,
-      "waterAmount": 500,
+      "waterMl": 500,
       "instruction": "Pour all the water over the grounds."
     },
     {
@@ -55,14 +102,14 @@
       "instruction": "Do nothing. Let it sit with the lid off."
     },
     {
-      "label": "Plunge crust",
+      "label": "Break crust",
       "durationSeconds": 30,
       "instruction": "Break the crust with a plunger, gently. Don't plunge all the way."
     },
     {
       "label": "Wait",
       "durationSeconds": 300,
-      "instruction": "Let the coffee brew."
+      "instruction": "Let the coffee settle."
     },
     {
       "label": "Plunge & pour",
@@ -70,4 +117,5 @@
       "instruction": "Press the plunger gently and slowly."
     }
   ]
-}]
+}
+]
