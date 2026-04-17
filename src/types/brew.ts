@@ -1,7 +1,7 @@
 export type BrewStep = {
     label: String;
-    duration: number;
-    waterAmount?: number; // ml - absent for wait steps
+    durationSeconds: number;
+    waterMl?: number; // absent for wait steps
     instruction: string;
 }
 
@@ -10,16 +10,16 @@ type BrewMethod = 'pourover' | 'aeropress' | 'french_press';
 export type Recipe = {
     id: string;
     name: string;
+    source: string;
     method: BrewMethod;
-    baseServings: number;
-    baseDose: number; // grams
-    baseWater: number; // ml
-    grind: string;
-    waterTemp: number; // celsius
     description: string;
-    source?: string;
+    baseDoseGrams: number;
+    baseWaterMl: number;
+    baseServings: number;
+    grind: string;
+    waterTempCelsius: number;
     steps: BrewStep[];
-}
+};
 
 export type BrewLogEntry = {
     id: string;
