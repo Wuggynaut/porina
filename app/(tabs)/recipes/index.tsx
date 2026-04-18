@@ -4,8 +4,13 @@ import {recipes} from "../../../src/data";
 import {useMemo} from "react";
 import {Recipe} from "../../../src/types/brew";
 import {colors, spacing, radius, typography} from "../../../src/theme";
+import {Ionicons} from "@expo/vector-icons";
+import {useFavorites} from "../../../src/context/FavoritesContext";
 
 export default function Recipes() {
+    const { favorites, toggleFavorite } = useFavorites();
+
+
     const sections = useMemo(() => {
         const grouped = recipes.reduce<Record<string, Recipe[]>>((acc, recipe) => {
             (acc[recipe.method] ??= []).push(recipe);
@@ -17,33 +22,49 @@ export default function Recipes() {
             data,
         }));
     }, [recipes]);
+
+
     return (
         <View style={styles.screen}>
             <SectionList
                 sections={sections}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.listContent}
-                renderItem={({ item }) => (
-                    <Link href={`/recipes/${item.id}`} asChild>
-                        <Pressable>
-                            {({ pressed }) => (
-                                <View style={[styles.card, pressed && styles.cardPressed]}>
-                                    <View style={styles.cardBody}>
-                                        <View style={{ alignSelf: "flex-start" }}>
-                                            <Text style={styles.recipeName}>{item.name}</Text>
-                                            <View style={[styles.cardDivider, { marginTop: spacing.sm }]} />
+                renderItem={({ item }) => {
+                    const isFav = favorites.has(item.id);
+                    return (
+                        <Link href={`/recipes/${item.id}`} asChild>
+                            <Pressable>
+                                {({pressed}) => (
+                                    <View style={[styles.card, pressed && styles.cardPressed]}>
+                                        <Pressable
+                                            onPress={(e) => {
+                                                e.preventDefault();
+                                                toggleFavorite(item.id);
+                                            }}
+                                            hitSlop={8}
+                                        >
+                                            <Ionicons name={isFav ? "heart" : "heart-outline"} size={30}
+                                                      color={isFav ? colors.coral : colors.textPrimary}/>
+                                        </Pressable>
+                                        <View style={styles.cardBody}>
+                                            <View style={{alignSelf: "flex-start"}}>
+                                                <Text style={styles.recipeName}>{item.name}</Text>
+                                                <View style={[styles.cardDivider, {marginTop: spacing.sm}]}/>
+                                            </View>
+                                            <Text style={styles.recipeMeta}>
+                                                {item.source} <Text
+                                                style={{fontWeight: "800"}}>·</Text> 1:{(item.baseWaterMl / item.baseDoseGrams).toFixed(1)}
+                                            </Text>
                                         </View>
-                                        <Text style={styles.recipeMeta}>
-                                            {item.source} <Text style={{ fontWeight: "800" }}>·</Text> 1:{(item.baseWaterMl / item.baseDoseGrams).toFixed(1)}
-                                        </Text>
-                                    </View>
 
-                                    <Text style={styles.chevron}>›</Text>
-                                </View>
-                            )}
-                        </Pressable>
-                    </Link>
-                )}
+                                        <Text style={styles.chevron}>›</Text>
+                                    </View>
+                                )}
+                            </Pressable>
+                        </Link>
+                    )
+                }}
                 renderSectionHeader={({ section: { title } }) => (
                     <View style={styles.sectionHeaderRow}>
                         <View style={styles.sectionHeaderAccent} />
@@ -106,6 +127,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         shadowRadius: 8,
         elevation: 2,
+        gap: spacing.lg,
     },
     cardPressed: {
         backgroundColor: colors.surfacePressed,
