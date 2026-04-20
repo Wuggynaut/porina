@@ -59,26 +59,33 @@ export const typography = {
         letterSpacing: 1,
         textTransform: "uppercase" as const,
     },
-    /** Section headers (POUROVER, FRENCH PRESS) */
     sectionHeader: {
         fontFamily: fonts.heading,
         fontSize: 20,
         fontWeight: "800" as const,
         letterSpacing: 2,
-        textTransform: "uppercase" as const,
+        textTransform: "capitalize" as const,
     },
-    /** Card title (recipe name) */
     cardTitle: {
         fontFamily: fonts.heading,
         fontSize: 17,
         fontWeight: "700" as const,
         letterSpacing: 0.1,
     },
-    /** Card secondary line (author · ratio) */
     cardMeta: {
         fontFamily: fonts.body,
         fontSize: 14,
         fontWeight: "500" as const,
         letterSpacing: 0.2,
+    },
+    ingredientText: {
+        fontFamily: fonts.body,
+        fontSize: 18,
+        fontWeight: "700" as const,
+    },
+    ingredientTextSecondary: {
+        fontFamily: fonts.body,
+        fontSize: 14,
+        fontWeight: "400" as const,
     },
 } as const;

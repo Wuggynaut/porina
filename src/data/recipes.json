@@ -1,6 +1,6 @@
 [{
   "id": "hoffman-v60",
-  "name": "James Hoffmann's V60 Recipe",
+  "name": "James Hoffmann's V60 Method",
   "source": "James Hoffmann",
   "description": "James Hoffmann's v60 technique.",
   "method": "pourover",
@@ -83,7 +83,7 @@
   "name": "Wuggy's French Press Recipe",
   "source": "Ari-Matti Toivonen",
   "description": "Wuggy's French Press method.",
-  "method": "french_press",
+  "method": "french press",
   "baseDoseGrams": 30,
   "baseWaterMl": 500,
   "baseServings": 2,

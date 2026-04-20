@@ -6,6 +6,7 @@ import {Recipe} from "../../../src/types/brew";
 import {colors, spacing, radius, typography} from "../../../src/theme";
 import {Ionicons} from "@expo/vector-icons";
 import {useFavorites} from "../../../src/context/FavoritesContext";
+import {SectionHeader} from "../../../src/components/SectionHeader";
 
 export default function Recipes() {
     const { favorites, toggleFavorite } = useFavorites();
@@ -66,10 +67,7 @@ export default function Recipes() {
                     )
                 }}
                 renderSectionHeader={({ section: { title } }) => (
-                    <View style={styles.sectionHeaderRow}>
-                        <View style={styles.sectionHeaderAccent} />
-                        <Text style={styles.sectionHeaderText}>{title}</Text>
-                    </View>
+                    <SectionHeader title={title} />
                 )}
                 stickySectionHeadersEnabled={false}
                 SectionSeparatorComponent={() => <View style={styles.sectionGap} />}
@@ -90,23 +88,6 @@ const styles = StyleSheet.create({
         paddingBottom: spacing.xxxl,
     },
 
-    // --- section headers ---
-    sectionHeaderRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: spacing.md,
-        marginBottom: spacing.lg,
-    },
-    sectionHeaderAccent: {
-        width: 4,
-        height: 24,
-        borderRadius: radius.sm,
-        backgroundColor: colors.orange,
-    },
-    sectionHeaderText: {
-        ...typography.sectionHeader,
-        color: colors.orange,
-    },
     sectionGap: {
         height: spacing.xxl,
     },
@@ -129,6 +110,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         gap: spacing.lg,
     },
+
     cardPressed: {
         backgroundColor: colors.surfacePressed,
     },
