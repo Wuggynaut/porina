@@ -1,5 +1,5 @@
 export type BrewStep = {
-    label: String;
+    label: string;
     durationSeconds: number;
     waterMl?: number; // absent for wait steps
     instruction: string;

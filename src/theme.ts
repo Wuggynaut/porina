@@ -85,7 +85,7 @@ export const typography = {
     },
     ingredientTextSecondary: {
         fontFamily: fonts.body,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "400" as const,
     },
 } as const;

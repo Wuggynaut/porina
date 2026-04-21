@@ -2,18 +2,19 @@ import {Link, useLocalSearchParams} from "expo-router";
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {colors, spacing, radius, typography} from "../../../src/theme";
 import {recipes} from "../../../src/data";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {SectionHeader} from "../../../src/components/SectionHeader";
+import {Ionicons} from "@expo/vector-icons";
+import {Minus, Plus} from "lucide-react-native";
 
 export default function RecipeScreen() {
     const { id } = useLocalSearchParams<{id: string}>();
     const recipe = recipes.find(r => r.id === id);
 
-    if (!recipe) {
-        return <Text>Recipe not found</Text>
-    }
+    const [servings, setServings] = useState<number>(recipe?.baseServings ?? 1);
 
     const totalTime = useMemo(() => {
+        if (!recipe) return "0m 0s";
         let totalTimeSeconds = 0;
         for (let step of recipe.steps) {
             totalTimeSeconds += step.durationSeconds;
@@ -23,10 +24,16 @@ export default function RecipeScreen() {
         return `${minutes}m ${seconds}s`;
     }, [recipe.steps]);
 
+    if (!recipe) {
+        return <Text>Recipe not found</Text>
+    }
+
     const formatTime = (seconds: number) =>
         `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
 
+    const changeServing = (amount: number) => {
 
+    }
 
     return (
         <View style={styles.screen}>
@@ -48,7 +55,24 @@ export default function RecipeScreen() {
 
             <View style={[styles.divider, {marginTop: spacing.sm}]}/>
 
-            <SectionHeader title={"Ingredients"} />
+            <View style={styles.row}>
+                <SectionHeader title={"Ingredients"} />
+                <View style={styles.servingGroup}>
+                    <Pressable
+                        style={styles.roundButton}
+                        onPress={() => changeServing(1)}
+                    >
+                        <Plus size={28} strokeWidth={3} color={"white"} />
+                    </Pressable>
+                    <Text style={styles.ingredientTextSecondary}>{servings} cups</Text>
+                    <Pressable
+                        style={styles.roundButton}
+                        onPress={() => changeServing(-1)}
+                    >
+                        <Minus size={28} strokeWidth={3} color={"white"} />
+                    </Pressable>
+                </View>
+            </View>
 
             <View style={styles.ingredientContainer}>
                 <View style={styles.row}>
@@ -80,7 +104,7 @@ export default function RecipeScreen() {
                             .reduce((sum, s) => sum + s.durationSeconds, 0);
                         const endTime = startTime + step.durationSeconds;
                         return (
-                            <View>
+                            <View key={step.label}>
                                 <View style={styles.stepRow}>
                                     <Text style={styles.stepTitle}>{index + 1}. {step.label}</Text>
                                     <View style={styles.stepMetaRow}>
@@ -150,6 +174,22 @@ const styles = StyleSheet.create({
         paddingBottom: spacing.sm,
     },
 
+    roundButton: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: colors.coral,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    servingGroup: {
+        marginLeft: "auto",
+        flexDirection: "row",
+        gap: spacing.sm,
+        alignItems: 'center',
+    },
+
     ingredientText: {
         ...typography.ingredientText,
         color: colors.brown,
@@ -158,6 +198,7 @@ const styles = StyleSheet.create({
     ingredientTextSecondary: {
         ...typography.ingredientTextSecondary,
         color: colors.brown,
+        fontWeight: "600",
     },
 
     ingredientValueGroup: {
