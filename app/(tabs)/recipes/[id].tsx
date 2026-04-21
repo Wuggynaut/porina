@@ -8,6 +8,7 @@ import {SectionHeader} from "../../../src/components/SectionHeader";
 export default function RecipeScreen() {
     const { id } = useLocalSearchParams<{id: string}>();
     const recipe = recipes.find(r => r.id === id);
+
     if (!recipe) {
         return <Text>Recipe not found</Text>
     }
@@ -25,9 +26,18 @@ export default function RecipeScreen() {
     const formatTime = (seconds: number) =>
         `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
 
+
+
     return (
         <View style={styles.screen}>
-            <Text style={styles.recipeHeader}>{recipe.name}</Text>
+            <Text
+                style={styles.recipeHeader}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.7}
+            >
+                {recipe.name}
+            </Text>
             <View style={styles.recipeMetaContainer}>
                 <Text style={styles.recipeMetaText}>{totalTime}</Text>
                 <Text style={styles.recipeMetaText}>•</Text>
