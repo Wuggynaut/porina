@@ -22,7 +22,7 @@ export default function RecipeScreen() {
         const minutes = Math.floor(totalTimeSeconds / 60);
         const seconds = totalTimeSeconds % 60;
         return `${minutes}m ${seconds}s`;
-    }, [recipe.steps]);
+    }, [recipe]);
 
     if (!recipe) {
         return <Text>Recipe not found</Text>
