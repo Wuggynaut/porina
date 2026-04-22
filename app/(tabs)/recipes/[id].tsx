@@ -1,5 +1,5 @@
 import {Link, useLocalSearchParams} from "expo-router";
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {colors, spacing, radius, typography} from "../../../src/theme";
 import {recipes} from "../../../src/data";
 import {useMemo, useState} from "react";
@@ -32,11 +32,12 @@ export default function RecipeScreen() {
         `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
 
     const changeServing = (amount: number) => {
-
+        if (servings+amount <= 0) return;
+        setServings(servings+amount);
     }
 
     return (
-        <View style={styles.screen}>
+        <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
             <Text
                 style={styles.recipeHeader}
                 numberOfLines={1}
@@ -60,16 +61,16 @@ export default function RecipeScreen() {
                 <View style={styles.servingGroup}>
                     <Pressable
                         style={styles.roundButton}
-                        onPress={() => changeServing(1)}
+                        onPress={() => changeServing(-1)}
                     >
-                        <Plus size={28} strokeWidth={3} color={"white"} />
+                        <Minus size={28} strokeWidth={3} color={"white"} />
                     </Pressable>
                     <Text style={styles.ingredientTextSecondary}>{servings} cups</Text>
                     <Pressable
                         style={styles.roundButton}
-                        onPress={() => changeServing(-1)}
+                        onPress={() => changeServing(1)}
                     >
-                        <Minus size={28} strokeWidth={3} color={"white"} />
+                        <Plus size={28} strokeWidth={3} color={"white"} />
                     </Pressable>
                 </View>
             </View>
@@ -78,7 +79,7 @@ export default function RecipeScreen() {
                 <View style={styles.row}>
                     <Text style={styles.ingredientText}>Coffee</Text>
                     <View style={styles.ingredientValueGroup}>
-                        <Text style={styles.ingredientText}>{recipe.baseDoseGrams} g</Text>
+                        <Text style={styles.ingredientText}>{(recipe.baseDoseGrams*(servings/recipe.baseServings)).toFixed(1)} g</Text>
                         <Text style={styles.ingredientTextSecondary}>({recipe.grind})</Text>
                     </View>
                 </View>
@@ -86,7 +87,7 @@ export default function RecipeScreen() {
                 <View style={styles.row}>
                     <Text style={styles.ingredientText}>Water</Text>
                     <View  style={styles.ingredientValueGroup}>
-                        <Text style={styles.ingredientText}>{recipe.baseWaterMl} ml</Text>
+                        <Text style={styles.ingredientText}>{(recipe.baseWaterMl*(servings/recipe.baseServings)).toFixed(1)} ml</Text>
                         <Text style={styles.ingredientTextSecondary}>(at {recipe.waterTempCelsius}°C)</Text>
                     </View>
                 </View>
@@ -108,7 +109,7 @@ export default function RecipeScreen() {
                                 <View style={styles.stepRow}>
                                     <Text style={styles.stepTitle}>{index + 1}. {step.label}</Text>
                                     <View style={styles.stepMetaRow}>
-                                        {step.waterMl && <Text style={styles.stepMeta}>{step.waterMl} ml</Text>}
+                                        {step.waterMl && <Text style={styles.stepMeta}>{(step.waterMl*(servings/recipe.baseServings)).toFixed(1)} ml</Text>}
                                         <Text style={styles.stepMeta}>{formatTime(startTime)}-{formatTime(endTime)}</Text>
                                     </View>
                                 </View>
@@ -123,10 +124,12 @@ export default function RecipeScreen() {
                     })}
                 </View>
             </View>
-            <Link href={`/brew/${id}`} asChild>
-                <Pressable><Text>Brew</Text></Pressable>
-            </Link>
-        </View>
+            <View style={styles.centered}>
+                <Link href={`/brew/${id}`} asChild>
+                    <Pressable style={styles.button}><Text style={styles.buttonText}>Brew</Text></Pressable>
+                </Link>
+            </View>
+        </ScrollView>
     )
 }
 
@@ -135,6 +138,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.background,
         paddingHorizontal: spacing.xl,
+    },
+
+    scrollContent: {
+        paddingBottom: spacing.xxxl,
     },
 
     recipeHeader: {
@@ -181,6 +188,27 @@ const styles = StyleSheet.create({
         backgroundColor: colors.coral,
         alignItems: "center",
         justifyContent: "center",
+    },
+
+    button: {
+        width: 120,
+        height: 48,
+        borderRadius: radius.sm,
+        backgroundColor: colors.coral,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: spacing.md,
+        marginBottom: spacing.md,
+    },
+
+    buttonText: {
+        ...typography.sectionHeader,
+        color: colors.white,
+        textTransform: "uppercase",
+    },
+
+    centered: {
+        alignItems: "center",
     },
 
     servingGroup: {

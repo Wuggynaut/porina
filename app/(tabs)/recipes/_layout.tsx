@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
 import {typography, colors} from "../../../src/theme";
-import {inspect} from "node:util";
 
 export default function RecipesLayout() {
     return (
