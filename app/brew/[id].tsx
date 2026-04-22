@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Pressable} from "react-native";
 import {recipes} from "../../src/data";
 import {useBrewTimer} from "../../src/hooks/useBrewTimer";
 import {colors, spacing} from "../../src/theme";
+import {ProgressRing} from "../../src/components/ProgressRing";
 
 export default function BrewSession() {
     const {id} = useLocalSearchParams();
@@ -43,12 +44,10 @@ export default function BrewSession() {
                     )}
                     <Text>{timer.secondsRemaining}s</Text>
 
-                    <View
-                        style={{
-                            height: 4,
-                            width: `${timer.stepProgress * 100}%`,
-                            backgroundColor: 'brown',
-                        }}
+                    <ProgressRing
+                        steps={timer.steps}
+                        progress={timer.progress}
+                        totalDuration={timer.totalDuration}
                     />
                 </View>
             )}

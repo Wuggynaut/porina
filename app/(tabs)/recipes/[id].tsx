@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     recipeHeader: {
         ...typography.sectionHeader,
         fontSize: 22,
-        fontWeight: "black",
+        fontWeight: "900",
         color: colors.brown,
         paddingTop: spacing.xl,
         textTransform: "uppercase",
