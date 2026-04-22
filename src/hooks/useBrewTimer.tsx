@@ -1,6 +1,5 @@
 import {BrewStep} from "../types/brew";
 import {useCallback, useEffect, useReducer, useRef} from "react";
-import {clearInterval, setInterval} from "node:timers";
 
 // The state
 
@@ -42,34 +41,34 @@ function timerReducer (state: TimerState, action: TimerAction): TimerState {
         case 'LOAD':
             return initialState(action.steps);
         case "START":
-            if (state.steps.length === 0) return state;
-            return {...state, status: 'running'};
+            if (state.status !== 'idle' || state.steps.length === 0) return state;
+            return { ...state, status: 'running' };
         case "PAUSE":
             if (state.status !== 'running') return state;
             return {...state, status: 'paused'};
         case "RESUME":
             if (state.status !== 'paused') return state;
         case 'TICK':
-            if (state.status !== 'paused') return state;
+            if (state.status !== 'running') return state;
 
-            const next = state.secondsRemaining -1;
-            const elapsed = state.elapsedTotal +1;
+            const next = state.secondsRemaining - 1;
+            const elapsed = state.elapsedTotal + 1;
 
-            // time left on current step
             if (next > 0) {
-                return {...state, secondsRemaining: next, elapsedTotal: elapsed};
+                return { ...state, secondsRemaining: next, elapsedTotal: elapsed };
             }
 
-            // advance to next step
-            const nextIndex = state.currentStepIndex+ + 1;
+            // Advance past any zero-duration steps
+            let nextIndex = state.currentStepIndex + 1;
+            while (
+                nextIndex < state.steps.length &&
+                state.steps[nextIndex].durationSeconds === 0
+                ) {
+                nextIndex++;
+            }
 
             if (nextIndex >= state.steps.length) {
-                return {
-                    ...state,
-                    secondsRemaining: 0,
-                    elapsedTotal: elapsed,
-                    status: "finished",
-                };
+                return { ...state, secondsRemaining: 0, elapsedTotal: elapsed, status: 'finished' };
             }
 
             return {
@@ -113,7 +112,7 @@ export function useBrewTimer({steps, onStepChange, onFinish}: UseBrewTimerOption
     useEffect(() => {
         if (state.status !== 'running') return;
 
-        const id = setInterval(() => action({type: "TICK"}), 1_000);
+        const id = setInterval(() => action({ type: 'TICK' }), 1_000);
         return () => clearInterval(id);
     }, [state.status]);
 

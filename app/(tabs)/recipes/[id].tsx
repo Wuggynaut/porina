@@ -4,7 +4,6 @@ import {colors, spacing, radius, typography} from "../../../src/theme";
 import {recipes} from "../../../src/data";
 import {useMemo, useState} from "react";
 import {SectionHeader} from "../../../src/components/SectionHeader";
-import {Ionicons} from "@expo/vector-icons";
 import {Minus, Plus} from "lucide-react-native";
 
 export default function RecipeScreen() {
@@ -36,20 +35,25 @@ export default function RecipeScreen() {
         setServings(servings+amount);
     }
 
+    const formatAmount = (n: number) => {
+        const rounded = Math.round(n * 10) / 10;
+        return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
+    }
+
     return (
         <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
             <Text
                 style={styles.recipeHeader}
-                numberOfLines={1}
+                numberOfLines={2}
                 adjustsFontSizeToFit
-                minimumFontScale={0.7}
+                minimumFontScale={10}
             >
                 {recipe.name}
             </Text>
             <View style={styles.recipeMetaContainer}>
                 <Text style={styles.recipeMetaText}>{totalTime}</Text>
                 <Text style={styles.recipeMetaText}>•</Text>
-                <Text style={styles.recipeMetaText}>1:{(recipe.baseWaterMl / recipe.baseDoseGrams).toFixed(1)}</Text>
+                <Text style={styles.recipeMetaText}>1:{formatAmount(recipe.baseWaterMl / recipe.baseDoseGrams)}</Text>
                 <Text style={styles.recipeMetaText}>•</Text>
                 <Text style={styles.recipeMetaText}>{recipe.method}</Text>
             </View>
@@ -79,7 +83,7 @@ export default function RecipeScreen() {
                 <View style={styles.row}>
                     <Text style={styles.ingredientText}>Coffee</Text>
                     <View style={styles.ingredientValueGroup}>
-                        <Text style={styles.ingredientText}>{(recipe.baseDoseGrams*(servings/recipe.baseServings)).toFixed(1)} g</Text>
+                        <Text style={styles.ingredientText}>{formatAmount(recipe.baseDoseGrams*(servings/recipe.baseServings))} g</Text>
                         <Text style={styles.ingredientTextSecondary}>({recipe.grind})</Text>
                     </View>
                 </View>
@@ -87,7 +91,7 @@ export default function RecipeScreen() {
                 <View style={styles.row}>
                     <Text style={styles.ingredientText}>Water</Text>
                     <View  style={styles.ingredientValueGroup}>
-                        <Text style={styles.ingredientText}>{(recipe.baseWaterMl*(servings/recipe.baseServings)).toFixed(1)} ml</Text>
+                        <Text style={styles.ingredientText}>{formatAmount(recipe.baseWaterMl*(servings/recipe.baseServings))} ml</Text>
                         <Text style={styles.ingredientTextSecondary}>(at {recipe.waterTempCelsius}°C)</Text>
                     </View>
                 </View>
@@ -109,7 +113,7 @@ export default function RecipeScreen() {
                                 <View style={styles.stepRow}>
                                     <Text style={styles.stepTitle}>{index + 1}. {step.label}</Text>
                                     <View style={styles.stepMetaRow}>
-                                        {step.waterMl && <Text style={styles.stepMeta}>{(step.waterMl*(servings/recipe.baseServings)).toFixed(1)} ml</Text>}
+                                        {step.waterMl && <Text style={styles.stepMeta}>{formatAmount(step.waterMl*(servings/recipe.baseServings))} ml</Text>}
                                         <Text style={styles.stepMeta}>{formatTime(startTime)}-{formatTime(endTime)}</Text>
                                     </View>
                                 </View>
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
     recipeHeader: {
         ...typography.sectionHeader,
         fontSize: 22,
+        fontWeight: "black",
         color: colors.brown,
         paddingTop: spacing.xl,
         textTransform: "uppercase",
@@ -154,7 +159,7 @@ const styles = StyleSheet.create({
 
     recipeMetaContainer: {
         flexDirection: "row",
-        gap: spacing.xxl,
+        gap: spacing.xl,
     },
 
     recipeMetaText: {
@@ -268,18 +273,20 @@ const styles = StyleSheet.create({
     stepTitle: {
         ...typography.cardTitle,
         color: colors.textPrimary,
-        fontSize: 22,
+        fontSize: 18,
+        flex: 1,
+        flexShrink: 1,
     },
 
     stepMetaRow: {
-        marginLeft: "auto",
         flexDirection: "row",
         alignItems: "baseline",
-        gap: spacing.lg,
+        gap: spacing.sm,
     },
 
     stepMeta: {
         ...typography.cardMeta,
+        fontSize: 12,
         color: colors.white,
         backgroundColor: colors.brown,
         borderRadius: radius.sm,

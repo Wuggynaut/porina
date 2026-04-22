@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     text: {
         ...typography.sectionHeader,
         color: colors.orange,
-        fontWeight: "600",
+        fontWeight: "300",
         letterSpacing: 1,
     },
 });
