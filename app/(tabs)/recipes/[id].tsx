@@ -5,6 +5,8 @@ import {recipes} from "../../../src/data";
 import {useMemo, useState} from "react";
 import {SectionHeader} from "../../../src/components/SectionHeader";
 import {Minus, Plus} from "lucide-react-native";
+import {Card} from "../../../src/components/Card";
+import {formatAmount, formatTime} from "../../../src/utils/format";
 
 export default function RecipeScreen() {
     const { id } = useLocalSearchParams<{id: string}>();
@@ -27,17 +29,9 @@ export default function RecipeScreen() {
         return <Text>Recipe not found</Text>
     }
 
-    const formatTime = (seconds: number) =>
-        `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
-
     const changeServing = (amount: number) => {
         if (servings+amount <= 0) return;
         setServings(servings+amount);
-    }
-
-    const formatAmount = (n: number) => {
-        const rounded = Math.round(n * 10) / 10;
-        return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
     }
 
     return (
@@ -101,7 +95,7 @@ export default function RecipeScreen() {
 
             <SectionHeader title={"Steps"} />
 
-            <View style={styles.card}>
+            <Card>
                 <View style={styles.cardBody}>
                     {recipe.steps.map((step, index) => {
                         const startTime = recipe.steps
@@ -127,9 +121,9 @@ export default function RecipeScreen() {
                         )
                     })}
                 </View>
-            </View>
+            </Card>
             <View style={styles.centered}>
-                <Link href={`/brew/${id}`} asChild>
+                <Link href={`/brew/${id}?servings=${servings}`} asChild>
                     <Pressable style={styles.button}><Text style={styles.buttonText}>Brew</Text></Pressable>
                 </Link>
             </View>
@@ -151,7 +145,6 @@ const styles = StyleSheet.create({
     recipeHeader: {
         ...typography.sectionHeader,
         fontSize: 22,
-        fontWeight: "900",
         color: colors.brown,
         paddingTop: spacing.xl,
         textTransform: "uppercase",
@@ -239,24 +232,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "baseline",
         gap: spacing.xs,
-    },
-
-    card: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: colors.surface,
-        borderRadius: radius.xs,
-        paddingVertical: spacing.lg,
-        paddingLeft: spacing.xl,
-        paddingRight: spacing.lg,
-        marginBottom: spacing.sm,
-        minHeight: 72,
-        shadowColor: colors.cardShadow,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 8,
-        elevation: 2,
-        gap: spacing.lg,
     },
 
     cardBody: {

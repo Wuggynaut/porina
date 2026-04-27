@@ -7,6 +7,7 @@ import {colors, spacing, radius, typography} from "../../../src/theme";
 import {Ionicons} from "@expo/vector-icons";
 import {useFavorites} from "../../../src/context/FavoritesContext";
 import {SectionHeader} from "../../../src/components/SectionHeader";
+import {Card} from "../../../src/components/Card";
 
 export default function Recipes() {
     const { favorites, toggleFavorite } = useFavorites();
@@ -37,7 +38,7 @@ export default function Recipes() {
                         <Link href={`/recipes/${item.id}`} asChild>
                             <Pressable>
                                 {({pressed}) => (
-                                    <View style={[styles.card, pressed && styles.cardPressed]}>
+                                    <Card style={{flexDirection: "row"}}>
                                         <Pressable
                                             onPress={(e) => {
                                                 e.preventDefault();
@@ -60,7 +61,7 @@ export default function Recipes() {
                                         </View>
 
                                         <Text style={styles.chevron}>›</Text>
-                                    </View>
+                                    </Card>
                                 )}
                             </Pressable>
                         </Link>

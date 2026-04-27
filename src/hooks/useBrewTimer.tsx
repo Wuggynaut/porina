@@ -48,6 +48,7 @@ function timerReducer (state: TimerState, action: TimerAction): TimerState {
             return {...state, status: 'paused'};
         case "RESUME":
             if (state.status !== 'paused') return state;
+            return {...state, status: 'running'};
         case 'TICK':
             if (state.status !== 'running') return state;
 
