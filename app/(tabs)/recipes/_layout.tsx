@@ -2,12 +2,13 @@ import { Stack } from 'expo-router';
 import {typography, colors} from "../../../src/theme";
 
 export default function RecipesLayout() {
+
     return (
         <Stack
             screenOptions={{
                 headerStyle: { backgroundColor: colors.coral },
+                headerTitleStyle: typography.screenTitle as any,
                 headerTintColor: colors.white,
-                headerTitleStyle: typography.screenTitle,
                 headerTitleAlign: "center",
             }}
         >

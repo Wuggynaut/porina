@@ -30,7 +30,7 @@ export default function RootLayout() {
         <FavoritesProvider>
             <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
-                <Stack.Screen name="brew/[id]" options={{ presentation: 'modal', headerShown: false}} />
+                <Stack.Screen name="brew" options={{ presentation: 'modal', headerShown: false}} />
             </Stack>
         </FavoritesProvider>
     )

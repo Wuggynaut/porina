@@ -1,6 +1,15 @@
 import { BrewStep } from "../types/brew";
 import Svg, { Circle, Line } from "react-native-svg";
 import { colors } from "../theme";
+import Animated, {
+    useSharedValue,
+    useAnimatedProps,
+    withTiming,
+    Easing,
+} from "react-native-reanimated";
+import {useEffect} from "react";
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type Props = {
     steps: BrewStep[];
@@ -18,11 +27,26 @@ export function ProgressRing({
                                  strokeWidth = 16,
                              }: Props) {
     const center = size / 2;
-    // No extra padding needed now that shadow layers are gone
     const radius = center - strokeWidth / 2;
     const circumference = 2 * Math.PI * radius;
     const filled = progress * circumference;
     const rotation = -90; // start from 12 o'clock
+
+    const animatedProgress = useSharedValue(0);
+
+    useEffect(() => {
+        animatedProgress.value = withTiming(progress, {
+            duration: 950,
+            easing: Easing.linear,
+        })
+    }, [progress]);
+
+    const animatedStrokeProps = useAnimatedProps(() => {
+        const filled = animatedProgress.value * circumference;
+        return {
+            strokeDashoffset: circumference - filled,
+        };
+    });
 
     // Build divider positions between steps
     const dividers: { angle: number; fraction: number }[] = [];
@@ -34,13 +58,12 @@ export function ProgressRing({
         dividers.push({ angle, fraction });
     }
 
-    // Tick marks sit just inside/outside the ring
     const tickOuter = radius + strokeWidth / 2 - 2;
     const tickInner = radius - strokeWidth / 2 + 2;
 
     return (
         <Svg width={size} height={size}>
-            {/* ── Background track ── */}
+            {/* Background track */}
             <Circle
                 cx={center}
                 cy={center}
@@ -50,22 +73,21 @@ export function ProgressRing({
                 fill="none"
             />
 
-            {/* ── Progress arc ── */}
-            <Circle
+            {/* Progress arc, smooth animated */}
+            <AnimatedCircle
                 cx={center}
                 cy={center}
                 r={radius}
                 stroke={colors.coral}
                 strokeWidth={strokeWidth}
                 fill="none"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference - filled}
+                strokeDasharray={`${circumference}, ${circumference}`}
+                animatedProps={animatedStrokeProps}
                 strokeLinecap="butt"
-                rotation={rotation}
-                origin={`${center}, ${center}`}
+                transform={`rotate(${rotation}, ${center}, ${center})`}
             />
 
-            {/* ── Step divider ticks ── */}
+            {/* Step divider ticks */}
             {dividers.map(({ angle, fraction }, i) => {
                 const rad = (angle * Math.PI) / 180;
                 const surpassed = progress >= fraction;

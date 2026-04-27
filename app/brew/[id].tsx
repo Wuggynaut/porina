@@ -7,28 +7,34 @@ import {ProgressRing} from "../../src/components/ProgressRing";
 import {RotateCcw} from "lucide-react-native";
 import {Ionicons} from "@expo/vector-icons";
 import {Card} from "../../src/components/Card";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import {formatAmount, formatTime} from "../../src/utils/format";
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withTiming,
+    Easing,
+    FadeInRight, FadeOutLeft, FadeInLeft, FadeOutRight,
+} from "react-native-reanimated";
+import {activateKeepAwakeAsync, deactivateKeepAwake} from "expo-keep-awake";
+import * as Haptics from 'expo-haptics';
 
 export default function BrewSession() {
 
-    const {id, servings} = useLocalSearchParams();
+    const { id, servings } = useLocalSearchParams<{ id: string; servings: string }>();
     const recipe = recipes.find(r => r.id === id);
     const servingCount = Number(servings) || recipe?.baseServings || 1;
     const ratio = recipe ? servingCount / recipe.baseServings : 1;
-
 
     const timer = useBrewTimer({
         steps: recipe?.steps ?? [],
 
         onStepChange: (index, step) => {
-            console.log(`Now on step ${index}: ${step.label}`);
-            // TODO: Add haptics etc.
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(console.warn);
         },
 
         onFinish: () => {
-            console.log('Brew is complete')
-            // TODO: navigate to 'log this brew' screen.
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(console.warn);
         }
     })
 
@@ -44,20 +50,53 @@ export default function BrewSession() {
         return { scaleTarget: cumulative, nextScaleTarget: next };
     }, [timer.steps, timer.currentStepIndex, ratio]);
 
+    // Screen stays awake while timer is running or paused
+    useEffect(() => {
+        const isActive = timer.status === 'running' || timer.status === 'paused';
+
+        if (isActive) {
+            activateKeepAwakeAsync('brewSession').catch(console.warn);
+        } else {
+            deactivateKeepAwake('brewSession').catch(console.warn);
+        }
+
+        return () => {
+            deactivateKeepAwake('brewSession').catch(console.warn);
+        };
+    }, [timer.status]);
+
+    // Animations
+    const isSplit = timer.status === 'running' || timer.status === 'paused';
+    const spread = useSharedValue(0);
+    const resetOpacity = useSharedValue(0);
+
+    useEffect(() => {
+        spread.value = withTiming(isSplit ? 70 : 0, {
+            duration: 400,
+            easing: Easing.out(Easing.cubic),
+        });
+
+        resetOpacity.value = withTiming(isSplit ? 1 : 0, {
+            duration: isSplit ? 400 : 300,
+        });
+    }, [isSplit]);
+
+    const resetButtonStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: -spread.value }],
+        opacity: resetOpacity.value,
+    }));
+
+    const mainButtonStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: spread.value }],
+    }));
+
     if (!recipe) {
         return <Text>Recipe not found</Text>;
     }
 
     return (
         <View style={styles.screen}>
-            <Text
-                style={styles.header}
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                minimumFontScale={10}
-            >
-                Now brewing
-            </Text>
+
             <Text style={styles.subHeader}>
                 {recipe.name}
             </Text>
@@ -93,117 +132,110 @@ export default function BrewSession() {
                 </View>
             )}
 
-            {timer.status === 'idle' &&(
-                <View style={styles.buttonBundle}>
-                    <Pressable style={styles.roundButtonBig} onPress={timer.start}>
-                        <Ionicons name={"play"} color={"white"} size={34}/>
+            <View style={styles.buttonContainer}>
+
+                <Animated.View style={[styles.buttonBundle, styles.centeredButton, resetButtonStyle]}>
+                    <Pressable
+                        style={[styles.roundButton, { backgroundColor: colors.orange }]}
+                        onPress={timer.reset}
+                        disabled={!isSplit}
+                    >
+                        <RotateCcw size={30} strokeWidth={2.5} color="white" />
                     </Pressable>
-                    <Text style={styles.buttonLabelText}>Start</Text>
-                </View>
-            )}
+                    <Text style={styles.buttonLabelText}>Reset</Text>
+                </Animated.View>
 
-            {timer.status === 'running' && (
-                <View style={styles.buttonRow}>
-                    <View style={styles.buttonBundle}>
-                        <Pressable style={[styles.roundButton, {backgroundColor: colors.orange,}]} onPress={timer.reset}>
-                            <RotateCcw size={30} strokeWidth={2.5} color={"white"}/>
-                        </Pressable>
-                        <Text style={styles.buttonLabelText}>Reset</Text>
-                    </View>
-                    <View style={styles.buttonBundle}>
-                        <Pressable style={styles.roundButton} onPress={timer.pause}>
-                            <Ionicons name={"pause"} color={"white"} size={30}/>
-                        </Pressable>
-                        <Text style={styles.buttonLabelText}>Pause</Text>
-                    </View>
-                </View>
-            )}
-
-            {timer.status === 'paused' && (
-                <View style={styles.buttonRow}>
-                    <View style={styles.buttonBundle}>
-                        <Pressable style={[styles.roundButton, {backgroundColor: colors.orange,}]} onPress={timer.reset}>
-                            <RotateCcw size={30} strokeWidth={2.5} color={"white"}/>
-                        </Pressable>
-                        <Text style={styles.buttonLabelText}>Reset</Text>
-                    </View>
-                    <View style={styles.buttonBundle}>
-                        <Pressable style={styles.roundButton} onPress={timer.resume}>
-                            <Ionicons name={"play"} color={"white"} size={30}/>
-                        </Pressable>
-                        <Text style={styles.buttonLabelText}>Resume</Text>
-                    </View>
-                </View>
-            )}
-
-            {timer.status === 'finished' &&(
-                <View style={styles.buttonBundle}>
-                    <Pressable style={styles.roundButtonBig} onPress={timer.start}>
-                        <RotateCcw size={34} strokeWidth={2.5} color={"white"}/>
+                <Animated.View style={[styles.buttonBundle, styles.centeredButton, mainButtonStyle]}>
+                    <Pressable
+                        style={isSplit ? styles.roundButton : styles.roundButtonBig}
+                        onPress={
+                            timer.status === 'idle'     ? timer.start :
+                                timer.status === 'running'  ? timer.pause :
+                                    timer.status === 'paused'   ? timer.resume :
+                                        timer.reset
+                        }
+                    >
+                        {timer.status === 'running' ? (
+                            <Ionicons name="pause" color="white" size={isSplit ? 30 : 34} />
+                        ) : timer.status === 'finished' ? (
+                            <RotateCcw size={34} strokeWidth={2.5} color="white" />
+                        ) : (
+                            <Ionicons name="play" color="white" size={isSplit ? 30 : 34} />
+                        )}
                     </Pressable>
-                    <Text style={styles.buttonLabelText}>Start</Text>
-                </View>
-            )}
+                    <Text style={styles.buttonLabelText}>
+                        {timer.status === 'idle'    ? 'Start' :
+                            timer.status === 'running' ? 'Pause' :
+                                timer.status === 'paused'  ? 'Resume' : 'Restart'}
+                    </Text>
+                </Animated.View>
+
+            </View>
 
             {timer.currentStep && (
-                <Card style={{marginTop: spacing.md, gap: spacing.sm, width: "100%"}}>
-                    <View style={styles.stepRow}>
-                        <Text style={styles.stepTitle}>{timer.currentStep.label}</Text>
-                        <View style={styles.stepMetaRow}>
-                            <Text style={styles.stepMeta}>
-                                Step <Text style={styles.stepMetaBold}>{timer.currentStepIndex + 1}</Text> of <Text style={styles.stepMetaBold}>{timer.steps.length}</Text>
-                            </Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardDivider} />
-                    {timer.currentStep.waterMl && (
+                <Animated.View
+                    key={`step-${timer.currentStepIndex}`}
+                    entering={FadeInRight.duration(350)}
+                    exiting={FadeOutLeft.duration(250)}
+                    style={{width: "100%"}}
+                >
+                    <Card style={{marginTop: spacing.md, gap: spacing.sm, width: "100%"}}>
                         <View style={styles.stepRow}>
-                            <Text style={styles.waterAmountText}>{formatAmount(timer.currentStep.waterMl*ratio)} ml</Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={styles.stepMeta}>Scale target: </Text>
-                                <Text style={styles.stepMetaBold}>{scaleTarget} ml</Text>
+                            <Text style={styles.stepTitle}>{timer.currentStep.label}</Text>
+                            <View style={styles.stepMetaRow}>
+                                <Text style={styles.stepMeta}>
+                                    Step <Text style={styles.stepMetaBold}>{timer.currentStepIndex + 1}</Text> of <Text style={styles.stepMetaBold}>{timer.steps.length}</Text>
+                                </Text>
                             </View>
                         </View>
-                    )}
-                    <Text style={styles.instructionText}>{timer.currentStep.instruction}</Text>
 
-                </Card>
+                        <View style={styles.cardDivider} />
+                        {timer.currentStep.waterMl && (
+                            <View style={styles.stepRow}>
+                                <Text style={styles.waterAmountText}>{formatAmount(timer.currentStep.waterMl*ratio)} ml</Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={styles.stepMeta}>Scale target: </Text>
+                                    <Text style={styles.stepMetaBold}>{scaleTarget} ml</Text>
+                                </View>
+                            </View>
+                        )}
+                        <Text style={styles.instructionText}>{timer.currentStep.instruction}</Text>
+
+                    </Card>
+                </Animated.View>
             )}
 
             {timer.currentStepIndex < recipe.steps.length - 1 && (() => {
                 const nextStep = recipe.steps[timer.currentStepIndex + 1];
                 return (
-                    <View style={styles.previewCard}>
-                        <Text style={styles.previewHeader}>Next</Text>
-                        <View style={{flexDirection: "row", gap: spacing.sm}}>
-                            <Text style={styles.previewText}>{nextStep.label}</Text>
-                            {nextStep.waterMl && (
-                                <>
-                                    <Text style={styles.previewText}>•</Text>
-                                    <Text style={styles.previewTextBold}>
-                                        {formatAmount(nextStep.waterMl * ratio)} ml
-                                    </Text>
-                                    {nextScaleTarget && (
-                                        <Text style={styles.previewText}>
-                                            (Scale target: {formatAmount(nextScaleTarget * ratio)} ml)
+                    <Animated.View
+                        key={`next-${timer.currentStepIndex}`}
+                        entering={FadeInLeft.duration(350).delay(200)}
+                        exiting={FadeOutRight.duration(250)}
+                        style={{width: "100%"}}
+                    >
+                        <View style={styles.previewCard}>
+                            <Text style={styles.previewHeader}>Next</Text>
+                            <View style={{flexDirection: "row", gap: spacing.sm}}>
+                                <Text style={styles.previewText}>{nextStep.label}</Text>
+                                {nextStep.waterMl && (
+                                    <>
+                                        <Text style={styles.previewText}>•</Text>
+                                        <Text style={styles.previewTextBold}>
+                                            {formatAmount(nextStep.waterMl * ratio)} ml
                                         </Text>
-                                    )}
-                                </>
-                            )}
+                                        {nextScaleTarget && (
+                                            <Text style={styles.previewText}>
+                                                (Scale target: {formatAmount(nextScaleTarget * ratio)} ml)
+                                            </Text>
+                                        )}
+                                    </>
+                                )}
+                            </View>
                         </View>
-                    </View>
+                    </Animated.View>
                 );
             })()}
-
-            {timer.status === 'finished' && (
-                <View>
-                    <Text>Done!</Text>
-                    <Pressable onPress={timer.reset}>
-                        <Text>Brew Again</Text>
-                    </Pressable>
-                </View>
-            )}
         </View>
     )
 }
@@ -256,6 +288,14 @@ const styles = StyleSheet.create({
         marginTop: spacing.xs,
     },
 
+    buttonContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: 90,
+        width: '100%',
+        marginVertical: spacing.sm,
+    },
+
     buttonRow: {
         flexDirection: "row",
         alignItems: "center",
@@ -286,6 +326,10 @@ const styles = StyleSheet.create({
     buttonBundle: {
         alignItems: 'center',
         gap: spacing.sm,
+    },
+
+    centeredButton: {
+        position: 'absolute',
     },
 
     buttonLabelText: {
