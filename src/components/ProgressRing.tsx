@@ -5,7 +5,7 @@ import Animated, {
     useSharedValue,
     useAnimatedProps,
     withTiming,
-    Easing,
+    Easing, cancelAnimation,
 } from "react-native-reanimated";
 import {useEffect} from "react";
 
@@ -15,6 +15,7 @@ type Props = {
     steps: BrewStep[];
     progress: number;       // 0 → 1
     totalDuration: number;
+    status: 'idle' | 'running' | 'paused' | 'finished';
     size?: number;
     strokeWidth?: number;
 };
@@ -23,6 +24,7 @@ export function ProgressRing({
                                  steps,
                                  progress,
                                  totalDuration,
+                                 status,
                                  size = 200,
                                  strokeWidth = 16,
                              }: Props) {
@@ -34,12 +36,30 @@ export function ProgressRing({
 
     const animatedProgress = useSharedValue(0);
 
+
     useEffect(() => {
-        animatedProgress.value = withTiming(progress, {
-            duration: 950,
-            easing: Easing.linear,
-        })
-    }, [progress]);
+        //Look ahead one tick for smooth animation, when idle
+        if (status === 'running') {
+            const stepSize = totalDuration > 0 ? 1 / totalDuration : 0;
+            const target = Math.min(progress + stepSize, 1);
+
+            animatedProgress.value = withTiming(target, {
+                duration: 1000,
+                easing: Easing.linear,
+            });
+        }
+        else if (status === 'paused') {
+            // Pause: stop the animation exactly where it is right now
+            cancelAnimation(animatedProgress);
+        }
+        else {
+            // Idle & finished: snap to actual position
+            animatedProgress.value = withTiming(progress, {
+                duration: 300,
+                easing: Easing.out(Easing.cubic),
+            });
+        }
+    }, [progress, status]);
 
     const animatedStrokeProps = useAnimatedProps(() => {
         const filled = animatedProgress.value * circumference;

@@ -114,6 +114,7 @@ export default function BrewSession() {
                         steps={timer.steps}
                         progress={timer.progress}
                         totalDuration={timer.totalDuration}
+                        status={timer.status}
                     />
                     <View
                         style={{
