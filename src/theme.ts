@@ -67,7 +67,7 @@ export const typography = {
     screenTitle: {
         fontFamily: fonts.heading,
         fontSize: 28,
-        fontWeight: "800" as const,
+        fontWeight: "600" as const,
         letterSpacing: 1,
         textTransform: "uppercase" as const,
     } as TextStyle,
