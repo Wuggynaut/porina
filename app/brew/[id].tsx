@@ -33,7 +33,7 @@ export default function BrewSession() {
         steps: recipe?.steps ?? [],
 
         onStepChange: (index, step) => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(console.warn);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(console.warn);
             playStepChime().catch(console.warn);
         },
 

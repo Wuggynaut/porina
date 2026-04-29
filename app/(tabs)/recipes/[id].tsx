@@ -237,6 +237,7 @@ const styles = StyleSheet.create({
     cardBody: {
         flex: 1,
         gap: spacing.sm,
+        width: "100%",
     },
 
     stepRow: {

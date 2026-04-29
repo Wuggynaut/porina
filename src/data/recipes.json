@@ -134,12 +134,12 @@
         "label": "First step",
         "durationSeconds": 10,
         "waterMl": 500,
-        "instruction": "Pour all the water over the grounds."
+        "instruction": "First test step."
       },
       {
         "label": "Second step",
         "durationSeconds": 10,
-        "instruction": "Do nothing. Let it sit with the lid off."
+        "instruction": "Second test step."
       }
     ]
   }
