@@ -1,0 +1,18 @@
+[
+  {
+    "asset": "step-chime.wav",
+    "title": "Select2.wav",
+    "author": "Sjonas88",
+    "authorUrl": "https://freesound.org/people/Sjonas88/",
+    "license": "CC 0",
+    "LicenseUrl": "https://creativecommons.org/public-domain/cc0/"
+  },
+  {
+    "asset": "finish-chime.wav",
+    "title": "Success.wav",
+    "author": "Sjonas88",
+    "authorUrl": "https://freesound.org/people/Sjonas88/",
+    "license": "CC 0",
+    "LicenseUrl": "https://creativecommons.org/public-domain/cc0/"
+  }
+]

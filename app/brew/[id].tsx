@@ -18,23 +18,28 @@ import Animated, {
 } from "react-native-reanimated";
 import {activateKeepAwakeAsync, deactivateKeepAwake} from "expo-keep-awake";
 import * as Haptics from 'expo-haptics';
+import {useBrewSounds} from "../../src/hooks/useBrewSounds";
 
 export default function BrewSession() {
-
     const { id, servings } = useLocalSearchParams<{ id: string; servings: string }>();
     const recipe = recipes.find(r => r.id === id);
     const servingCount = Number(servings) || recipe?.baseServings || 1;
     const ratio = recipe ? servingCount / recipe.baseServings : 1;
+
+    // Sounds
+    const { playStepChime, playFinishChime } = useBrewSounds();
 
     const timer = useBrewTimer({
         steps: recipe?.steps ?? [],
 
         onStepChange: (index, step) => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(console.warn);
+            playStepChime().catch(console.warn);
         },
 
         onFinish: () => {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(console.warn);
+            playFinishChime().catch(console.warn);
         }
     })
 
@@ -64,6 +69,8 @@ export default function BrewSession() {
             deactivateKeepAwake('brewSession').catch(console.warn);
         };
     }, [timer.status]);
+
+
 
     // Animations
     const isSplit = timer.status === 'running' || timer.status === 'paused';
@@ -226,7 +233,7 @@ export default function BrewSession() {
                                         </Text>
                                         {nextScaleTarget && (
                                             <Text style={styles.previewText}>
-                                                (Scale target: {formatAmount(nextScaleTarget * ratio)} ml)
+                                                (Scale target: {formatAmount(nextScaleTarget)} ml)
                                             </Text>
                                         )}
                                     </>

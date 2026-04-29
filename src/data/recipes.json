@@ -117,5 +117,30 @@
       "instruction": "Press the plunger gently and slowly."
     }
   ]
-}
+},
+  {
+    "id": "test-recipe",
+    "name": "Test Recipe",
+    "source": "Test",
+    "description": "This is for testing purposes",
+    "method": "aeropress",
+    "baseDoseGrams": 30,
+    "baseWaterMl": 500,
+    "baseServings": 2,
+    "grind": "Coarse",
+    "waterTempCelsius": 98,
+    "steps": [
+      {
+        "label": "First step",
+        "durationSeconds": 10,
+        "waterMl": 500,
+        "instruction": "Pour all the water over the grounds."
+      },
+      {
+        "label": "Second step",
+        "durationSeconds": 10,
+        "instruction": "Do nothing. Let it sit with the lid off."
+      }
+    ]
+  }
 ]
