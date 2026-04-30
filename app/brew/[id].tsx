@@ -282,17 +282,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
-    header: {
-        ...typography.cardMetaBold,
-        fontSize: 14,
-        textTransform: "uppercase",
-        color: colors.brown,
-        paddingTop: spacing.md,
-    },
-
     subHeader: {
         ...typography.sectionHeader,
-        color: colors.coral,
+        color: colors.textPrimary,
         fontSize: 18,
         fontWeight: "600",
         letterSpacing: 1,

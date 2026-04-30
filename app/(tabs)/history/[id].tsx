@@ -8,6 +8,7 @@ import {deleteBrewLog} from "../../../src/services/brewLogService";
 import {colors, radius, spacing, typography} from "../../../src/theme";
 import {findRecipeById} from "../../../src/data";
 import {Card} from "../../../src/components/Card";
+import Button from "../../../src/components/Button";
 
 export default function BrewDetail() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -91,6 +92,10 @@ export default function BrewDetail() {
             </Text>
 
             <Card style={{ width: "100%", gap: spacing.md }}>
+                <Text style={styles.cardHeader}>Details</Text>
+
+                <View style={styles.cardDivider} />
+
                 <DetailRow label="Coffee" value={`${entry.dose}g`} />
                 <DetailRow label="Water" value={`${entry.water} ml`} />
                 <DetailRow label="Grind" value={entry.grind} />
@@ -101,14 +106,13 @@ export default function BrewDetail() {
 
             {entry.notes && (
                 <Card style={{ width: "100%", gap: spacing.sm }}>
-                    <Text style={styles.fieldLabel}>Notes</Text>
+                    <Text style={styles.cardHeader}>Notes</Text>
+                    <View style={styles.cardDivider} />
                     <Text style={styles.notesText}>{entry.notes}</Text>
                 </Card>
             )}
 
-            <Pressable style={styles.deleteButton} onPress={handleDelete}>
-                <Text style={styles.deleteButtonText}>Delete Brew</Text>
-            </Pressable>
+            <Button label="Delete Brew" onPress={handleDelete} buttonStyle={{width: "100%"}}/>
         </ScrollView>
     )
 }
@@ -166,16 +170,25 @@ const styles = StyleSheet.create({
         marginVertical: spacing.xs,
     },
 
+    cardDivider: {
+        height: 2,
+        backgroundColor: colors.divider,
+        borderRadius: radius.full,
+        width: "100%",
+    },
+
     detailRow: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         alignItems: "baseline",
+        paddingHorizontal: spacing.lg,
     },
 
     detailLabel: {
         ...typography.cardMeta,
         color: colors.brown,
         fontSize: 14,
+        flex: 1,
     },
 
     detailValue: {
@@ -184,10 +197,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
 
-    fieldLabel: {
-        ...typography.cardMetaBold,
+    cardHeader: {
+        ...typography.cardTitle,
         color: colors.textPrimary,
-        fontSize: 14,
     },
 
     notesText: {

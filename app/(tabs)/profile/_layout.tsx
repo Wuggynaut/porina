@@ -1,9 +1,10 @@
 import { Stack } from 'expo-router';
+import HeaderStack from "../../../src/components/HeaderStack";
 
 export default function ProfileLayout() {
     return (
-        <Stack>
+        <HeaderStack>
             <Stack.Screen name="index" options={{ title: 'Profile' }} />
-        </Stack>
+        </HeaderStack>
     );
 }

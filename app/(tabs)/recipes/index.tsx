@@ -38,32 +38,31 @@ export default function Recipes() {
                     return (
                         <Link href={`/recipes/${item.id}`} asChild>
                             <Pressable>
-                                {({pressed}) => (
-                                    <Card style={{flexDirection: "row"}}>
-                                        <Pressable
-                                            onPress={(e) => {
-                                                e.preventDefault();
-                                                toggleFavorite(item.id);
-                                            }}
-                                            hitSlop={8}
-                                        >
-                                            <Ionicons name={isFav ? "heart" : "heart-outline"} size={30}
-                                                      color={isFav ? colors.coral : colors.textPrimary}/>
-                                        </Pressable>
-                                        <View style={styles.cardBody}>
-                                            <View style={{alignSelf: "flex-start"}}>
-                                                <Text style={styles.recipeName}>{item.name}</Text>
-                                                <View style={[styles.cardDivider, {marginTop: spacing.sm}]}/>
-                                            </View>
-                                            <Text style={styles.recipeMeta}>
-                                                {item.source} <Text
-                                                style={{fontWeight: "800"}}>·</Text> 1:{(item.baseWaterMl / item.baseDoseGrams).toFixed(1)}
-                                            </Text>
+                                <Card style={{flexDirection: "row"}}>
+                                    <Pressable
+                                        onPress={(e) => {
+                                            e.preventDefault();
+                                            toggleFavorite(item.id);
+                                        }}
+                                        hitSlop={8}
+                                    >
+                                        <Ionicons name={isFav ? "heart" : "heart-outline"} size={30}
+                                                  color={isFav ? colors.coral : colors.textPrimary}/>
+                                    </Pressable>
+                                    <View style={styles.cardBody}>
+                                        <View style={{alignSelf: "flex-start"}}>
+                                            <Text style={styles.recipeName}>{item.name}</Text>
                                         </View>
 
-                                        <Chevron />
-                                    </Card>
-                                )}
+                                        <View style={[styles.cardDivider]}/>
+                                        <Text style={styles.recipeMeta}>
+                                            {item.source} <Text
+                                            style={{fontWeight: "800"}}>·</Text> 1:{(item.baseWaterMl / item.baseDoseGrams).toFixed(1)}
+                                        </Text>
+                                    </View>
+
+                                    <Chevron />
+                                </Card>
                             </Pressable>
                         </Link>
                     )
@@ -72,7 +71,6 @@ export default function Recipes() {
                     <SectionHeader title={title} />
                 )}
                 stickySectionHeadersEnabled={false}
-                SectionSeparatorComponent={() => <View style={styles.sectionGap} />}
             />
         </View>
     )
