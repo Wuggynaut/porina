@@ -7,6 +7,7 @@ import {SectionHeader} from "../../../src/components/SectionHeader";
 import {Minus, Plus} from "lucide-react-native";
 import {Card} from "../../../src/components/Card";
 import {formatAmount, formatTime} from "../../../src/utils/format";
+import Button from "../../../src/components/Button";
 
 export default function RecipeScreen() {
     const { id } = useLocalSearchParams<{id: string}>();
@@ -124,7 +125,7 @@ export default function RecipeScreen() {
             </Card>
             <View style={styles.centered}>
                 <Link href={`/brew/${id}?servings=${servings}`} asChild>
-                    <Pressable style={styles.button}><Text style={styles.buttonText}>Brew</Text></Pressable>
+                    <Button onPress={() => {}} label="BREW" buttonStyle={{width: "100%", marginTop: spacing.md}} />
                 </Link>
             </View>
         </ScrollView>

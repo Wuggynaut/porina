@@ -23,7 +23,7 @@ export const colors = {
     border: "#f3db8c",
     divider: "#f3db8c",
     overlay: "rgba(90, 38, 24, 0.35)",
-    cardShadow: "rgba(90, 38, 24, 0.08)",
+    cardShadow: "#5a2618",
 
     // --- semantic ---
     success: "#5cb87a",

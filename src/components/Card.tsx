@@ -1,9 +1,20 @@
 import {StyleSheet, View, ViewStyle} from "react-native";
 import {colors, radius, spacing} from "../theme";
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
+import Animated from "react-native-reanimated";
 
-export function Card({ children, style }: { children: ReactNode; style?: ViewStyle }) {
-    return <View style={[styles.card, style]}>{children}</View>;
+type CardProps = {
+    children: ReactNode;
+    style?: ViewStyle;
+} & Pick<React.ComponentProps<typeof Animated.View>, "entering" | "exiting" | "layout">;
+
+export function Card({ children, style, ...animationProps }: CardProps) {
+    return <Animated.View
+        style={[styles.card, style]}
+        {...animationProps}
+    >
+        {children}
+    </Animated.View>;
 }
 
 const styles = StyleSheet.create({
@@ -18,7 +29,7 @@ const styles = StyleSheet.create({
         minHeight: 72,
         shadowColor: colors.cardShadow,
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
+        shadowOpacity: 0.08,
         shadowRadius: 8,
         elevation: 2,
         gap: spacing.md,

@@ -1,4 +1,4 @@
-import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
+import {FlatList, Pressable, SectionList, StyleSheet, Text, View} from "react-native";
 import {useRouter} from "expo-router";
 import {useAuth} from "../../../src/context/AuthContext";
 import {useEffect, useMemo, useState} from "react";
@@ -10,6 +10,7 @@ import {Card} from "../../../src/components/Card";
 import {formatDate} from "../../../src/utils/format";
 import {Ionicons} from "@expo/vector-icons";
 import Chevron from "../../../src/components/Chevron";
+import {SectionHeader} from "../../../src/components/SectionHeader";
 
 type Section = {
     title: string; // the year
@@ -78,11 +79,15 @@ export default function HistoryList() {
     }
 
     return (
-        <FlatList
-            data={logs}
+        <SectionList
+            sections={sections}
             keyExtractor={(item) => item.id}
             style={styles.screen}
             contentContainerStyle={styles.listContent}
+            stickySectionHeadersEnabled={false}
+            renderSectionHeader={({ section }) => (
+                <SectionHeader title={section.title} />
+            )}
             renderItem={({ item }) => {
                 const recipe = findRecipeById(item.recipeId);
                 const date = new Date(item.brewedAt);

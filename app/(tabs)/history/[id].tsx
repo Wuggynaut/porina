@@ -147,8 +147,9 @@ const styles = StyleSheet.create({
     },
 
     recipeName: {
-        ...typography.sectionHeader,
-        color: colors.coral,
+        ...typography.screenTitle,
+        color: colors.textPrimary,
+        fontSize: 24,
         textAlign: "center",
     },
 
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     },
 
     stars: {
-        fontSize: 24,
+        fontSize: 28,
         color: colors.orange,
         letterSpacing: 4,
         marginVertical: spacing.xs,
