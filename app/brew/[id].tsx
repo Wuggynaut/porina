@@ -1,4 +1,4 @@
-import {useLocalSearchParams} from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {View, Text, StyleSheet, Pressable} from "react-native";
 import {recipes} from "../../src/data";
 import {useBrewTimer} from "../../src/hooks/useBrewTimer";
@@ -21,6 +21,7 @@ import * as Haptics from 'expo-haptics';
 import {useBrewSounds} from "../../src/hooks/useBrewSounds";
 
 export default function BrewSession() {
+    const router = useRouter();
     const { id, servings } = useLocalSearchParams<{ id: string; servings: string }>();
     const recipe = recipes.find(r => r.id === id);
     const servingCount = Number(servings) || recipe?.baseServings || 1;
@@ -213,37 +214,70 @@ export default function BrewSession() {
                 </Animated.View>
             )}
 
-            {timer.currentStepIndex < recipe.steps.length - 1 && (() => {
-                const nextStep = recipe.steps[timer.currentStepIndex + 1];
-                return (
-                    <Animated.View
-                        key={`next-${timer.currentStepIndex}`}
-                        entering={FadeInLeft.duration(350).delay(200)}
-                        exiting={FadeOutRight.duration(250)}
-                        style={{width: "100%"}}
-                    >
-                        <View style={styles.previewCard}>
-                            <Text style={styles.previewHeader}>Next</Text>
-                            <View style={{flexDirection: "row", gap: spacing.sm}}>
-                                <Text style={styles.previewText}>{nextStep.label}</Text>
-                                {nextStep.waterMl && (
-                                    <>
-                                        <Text style={styles.previewText}>•</Text>
-                                        <Text style={styles.previewTextBold}>
-                                            {formatAmount(nextStep.waterMl * ratio)} ml
-                                        </Text>
-                                        {nextScaleTarget && (
-                                            <Text style={styles.previewText}>
-                                                (Scale target: {formatAmount(nextScaleTarget)} ml)
-                                            </Text>
+            {timer.status === 'finished' ? (
+                <Animated.View
+                    entering={FadeInRight.duration(350)}
+                    style={{ width: "100%" }}
+                >
+                    <Card style={{ marginTop: spacing.md, gap: spacing.md, width: "100%", alignItems: "center" }}>
+                        <Text style={styles.finishedTitle}>Brew Complete</Text>
+                        <View style={styles.cardDivider} />
+                        <Text style={styles.finishedMeta}>
+                            {formatAmount(recipe.baseDoseGrams * ratio)}g  ·  {formatAmount(recipe.baseWaterMl * ratio)} ml
+                        </Text>
+                        <Pressable
+                            style={styles.logButton}
+                            onPress={() =>
+                                router.push({
+                                    pathname: "/brew/log",
+                                    params: {
+                                        recipeId: recipe.id,
+                                        dose: String(recipe.baseDoseGrams * ratio),
+                                        water: String(recipe.baseWaterMl * ratio),
+                                        grind: recipe.grind,
+                                    },
+                                })
+                            }
+                        >
+                            <Text style={styles.logButtonText}>Log This Brew</Text>
+                        </Pressable>
+                    </Card>
+                </Animated.View>
+            ) : (
+                <>
+                    {timer.currentStepIndex < recipe.steps.length - 1 && (() => {
+                        const nextStep = recipe.steps[timer.currentStepIndex + 1];
+                        return (
+                            <Animated.View
+                                key={`next-${timer.currentStepIndex}`}
+                                entering={FadeInLeft.duration(350).delay(200)}
+                                exiting={FadeOutRight.duration(250)}
+                                style={{width: "100%"}}
+                            >
+                                <View style={styles.previewCard}>
+                                    <Text style={styles.previewHeader}>Next</Text>
+                                    <View style={{flexDirection: "row", gap: spacing.sm}}>
+                                        <Text style={styles.previewText}>{nextStep.label}</Text>
+                                        {nextStep.waterMl && (
+                                            <>
+                                                <Text style={styles.previewText}>•</Text>
+                                                <Text style={styles.previewTextBold}>
+                                                    {formatAmount(nextStep.waterMl * ratio)} ml
+                                                </Text>
+                                                {nextScaleTarget && (
+                                                    <Text style={styles.previewText}>
+                                                        (Scale target: {formatAmount(nextScaleTarget)} ml)
+                                                    </Text>
+                                                )}
+                                            </>
                                         )}
-                                    </>
-                                )}
-                            </View>
-                        </View>
-                    </Animated.View>
-                );
-            })()}
+                                    </View>
+                                </View>
+                            </Animated.View>
+                        );
+                    })()}
+                </>
+            )}
         </View>
     )
 }
@@ -439,6 +473,32 @@ const styles = StyleSheet.create({
         shadowRadius: 8,
         elevation: 2,
         gap: spacing.lg,
-    }
+    },
 
+    finishedTitle: {
+        ...typography.sectionHeader,
+        color: colors.coral,
+        fontSize: 18,
+    },
+
+    finishedMeta: {
+        ...typography.cardMeta,
+        color: colors.brown,
+        fontSize: 14,
+    },
+
+    logButton: {
+        backgroundColor: colors.coral,
+        borderRadius: radius.md,
+        paddingVertical: spacing.md,
+        paddingHorizontal: spacing.xxl,
+        width: "100%",
+        alignItems: "center",
+    },
+
+    logButtonText: {
+        ...typography.cardMetaBold,
+        color: colors.white,
+        fontSize: 16,
+    },
 })

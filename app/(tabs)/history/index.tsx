@@ -1,7 +1,16 @@
 import {Pressable, Text, View} from "react-native";
-import {Link} from "expo-router";
+import {Link, useRouter} from "expo-router";
+import {useAuth} from "../../../src/context/AuthContext";
+import {useState} from "react";
+import {BrewLogEntry} from "../../../src/types/brew";
 
 export default function HistoryList() {
+    const { user } = useAuth();
+    const router = useRouter();
+    const [logs, setLogs] = useState<BrewLogEntry[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>Brew History</Text>

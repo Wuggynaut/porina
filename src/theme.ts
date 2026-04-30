@@ -74,7 +74,7 @@ export const typography = {
     sectionHeader: {
         fontFamily: fonts.heading,
         fontSize: 20,
-        fontWeight: "800" as const,
+        fontWeight: "600" as const,
         letterSpacing: 2,
         textTransform: "capitalize" as const,
     } as TextStyle,

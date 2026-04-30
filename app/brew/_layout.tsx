@@ -12,6 +12,9 @@ export default function BrewLayout() {
                 headerShadowVisible: false,
                 headerTitleAlign: "center",
             }}
-        />
+        >
+            <Stack.Screen name="[id]" />
+            <Stack.Screen name="log" options={{ headerTitle: "Log Brew" }} />
+        </Stack>
     );
 }
