@@ -8,6 +8,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {useFavorites} from "../../../src/context/FavoritesContext";
 import {SectionHeader} from "../../../src/components/SectionHeader";
 import {Card} from "../../../src/components/Card";
+import Chevron from "../../../src/components/Chevron";
 
 export default function Recipes() {
     const { favorites, toggleFavorite } = useFavorites();
@@ -60,7 +61,7 @@ export default function Recipes() {
                                             </Text>
                                         </View>
 
-                                        <Text style={styles.chevron}>›</Text>
+                                        <Chevron />
                                     </Card>
                                 )}
                             </Pressable>
@@ -135,12 +136,5 @@ const styles = StyleSheet.create({
     recipeMeta: {
         ...typography.cardMeta,
         color: colors.brown,
-    },
-
-    chevron: {
-        fontSize: 26,
-        fontWeight: "700",
-        color: colors.orange,
-        marginLeft: spacing.md,
     },
 });

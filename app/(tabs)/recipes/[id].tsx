@@ -1,7 +1,7 @@
 import {Link, useLocalSearchParams} from "expo-router";
 import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {colors, spacing, radius, typography} from "../../../src/theme";
-import {recipes} from "../../../src/data";
+import {findRecipeById } from "../../../src/data";
 import {useMemo, useState} from "react";
 import {SectionHeader} from "../../../src/components/SectionHeader";
 import {Minus, Plus} from "lucide-react-native";
@@ -10,7 +10,7 @@ import {formatAmount, formatTime} from "../../../src/utils/format";
 
 export default function RecipeScreen() {
     const { id } = useLocalSearchParams<{id: string}>();
-    const recipe = recipes.find(r => r.id === id);
+    const recipe = findRecipeById(id);
 
     const [servings, setServings] = useState<number>(recipe?.baseServings ?? 1);
 
