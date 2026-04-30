@@ -1,10 +1,6 @@
 import {Tabs} from "expo-router";
-import {useFonts} from "expo-font";
-import {useEffect} from "react";
-import * as SplashScreen from "expo-splash-screen";
-import { colors, typography } from "../../src/theme";
-
-SplashScreen.preventAutoHideAsync();
+import { colors } from "../../src/theme";
+import {Ionicons} from "@expo/vector-icons";
 
 export default function RootLayout() {
 
@@ -18,9 +14,33 @@ export default function RootLayout() {
             }}
         >
             <Tabs.Screen name="index" options={{ href: null }} />
-            <Tabs.Screen name="recipes" options={{ title: 'Recipes', headerShown: false}} />
-            <Tabs.Screen name="history" options={{ title: 'History', headerShown: false}} />
-            <Tabs.Screen name="profile" options={{ title: 'Profile', headerShown: false}} />
+            <Tabs.Screen
+                name="recipes"
+                options={{
+                    title: 'Recipes',
+                    tabBarIcon: ({ color, size, focused }) => (
+                    <Ionicons name={focused ? "cafe" : "cafe-outline"} size={size} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="history"
+                options={{
+                    title: "History",
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons name={focused ? "time" : "time-outline"} size={size} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: "Profile",
+                    tabBarIcon: ({ color, size, focused }) => (
+                        <Ionicons name={focused ? "person" : "person-outline"} size={size} color={color} />
+                    ),
+                }}
+            />
         </Tabs>
     )
 }

@@ -1,4 +1,4 @@
-import {StyleSheet, View, ViewStyle} from "react-native";
+import {StyleSheet, ViewStyle} from "react-native";
 import {colors, radius, spacing} from "../theme";
 import React, {ReactNode} from "react";
 import Animated from "react-native-reanimated";
@@ -6,15 +6,18 @@ import Animated from "react-native-reanimated";
 type CardProps = {
     children: ReactNode;
     style?: ViewStyle;
+    pressed?: boolean;
 } & Pick<React.ComponentProps<typeof Animated.View>, "entering" | "exiting" | "layout">;
 
-export function Card({ children, style, ...animationProps }: CardProps) {
-    return <Animated.View
-        style={[styles.card, style]}
-        {...animationProps}
-    >
-        {children}
-    </Animated.View>;
+export function Card({ children, style, pressed, ...animationProps }: CardProps) {
+    return (
+        <Animated.View
+            style={[styles.card, pressed && styles.pressed, style]}
+            {...animationProps}
+        >
+            {children}
+        </Animated.View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -34,4 +37,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         gap: spacing.md,
     },
-})
+    pressed: {
+        backgroundColor: colors.surfacePressed,
+    },
+});

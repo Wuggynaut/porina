@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router';
-import {typography, colors} from "../../../src/theme";
 import HeaderStack from "../../../src/components/HeaderStack";
 
 export default function RecipesLayout() {

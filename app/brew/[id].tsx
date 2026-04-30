@@ -146,7 +146,11 @@ export default function BrewSession() {
 
                 <Animated.View style={[styles.buttonBundle, styles.centeredButton, resetButtonStyle]}>
                     <Pressable
-                        style={[styles.roundButton, { backgroundColor: colors.orange }]}
+                        style={({pressed}) => [
+                            styles.roundButton,
+                            { backgroundColor: colors.orange },
+                            pressed && { opacity: 0.6 },
+                        ]}
                         onPress={timer.reset}
                         disabled={!isSplit}
                     >
@@ -157,7 +161,10 @@ export default function BrewSession() {
 
                 <Animated.View style={[styles.buttonBundle, styles.centeredButton, mainButtonStyle]}>
                     <Pressable
-                        style={isSplit ? styles.roundButton : styles.roundButtonBig}
+                        style={({pressed}) => [
+                            isSplit ? styles.roundButton : styles.roundButtonBig,
+                            pressed && { opacity: 0.6 },
+                        ]}
                         onPress={
                             timer.status === 'idle'     ? timer.start :
                                 timer.status === 'running'  ? timer.pause :
@@ -249,8 +256,14 @@ export default function BrewSession() {
                                 }}
                             >
                                 <Text style={styles.previewHeader}>Next</Text>
-                                <View style={{flexDirection: "row", gap: spacing.sm}}>
-                                    <Text style={styles.previewText}>{nextStep.label}</Text>
+                                <View style={{
+                                    flexDirection: "row",
+                                    gap: spacing.sm,
+                                    flex: 1,
+                                    flexWrap: "wrap",
+                                    }}
+                                >
+                                    <Text style={styles.previewText} numberOfLines={1}>{nextStep.label}</Text>
                                     {nextStep.waterMl && (
                                         <>
                                             <Text style={styles.previewText}>•</Text>
@@ -259,7 +272,7 @@ export default function BrewSession() {
                                             </Text>
                                             {nextScaleTarget && (
                                                 <Text style={styles.previewText}>
-                                                    (Scale target: {formatAmount(nextScaleTarget)} ml)
+                                                    (Scale target: <Text style={styles.previewTextBold}>{formatAmount(nextScaleTarget)} ml</Text>)
                                                 </Text>
                                             )}
                                         </>

@@ -3,7 +3,17 @@ import {useAuth} from "../../src/context/AuthContext";
 import {recipes} from "../../src/data";
 import {useState} from "react";
 import {saveBrewLog} from "../../src/services/brewLogService";
-import {Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+import {
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
+} from "react-native";
 import {colors, radius, spacing, typography} from "../../src/theme";
 import {Card} from "../../src/components/Card";
 
@@ -58,74 +68,80 @@ export default function LogBrewScreen() {
     }
 
     return (
-        <ScrollView
-            style={styles.screen}
-            contentContainerStyle={styles.content}
-            keyboardShouldPersistTaps="handled"
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            keyboardVerticalOffset={100}
         >
-            {recipe && (
-                <Text style={styles.recipeName}>{recipe.name}</Text>
-            )}
-            <Text style={styles.meta}>
-                {dose}g  ·  {water} ml
-            </Text>
-
-            <Card style={{width: "100%", gap: spacing.sm }}>
-                <Text style={styles.fieldLabel}>How was your brew?</Text>
-                <View style={styles.starsRow}>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <Pressable
-                            key={star}
-                            onPress={() => setRating(star)}
-                            hitSlop={8}
-                        >
-                            <Text
-                                style={[
-                                    styles.star,
-                                    star <= rating && styles.starFilled,
-                                ]}
-                            >
-                                ★
-                            </Text>
-                        </Pressable>
-                    ))}
-                </View>
-            </Card>
-
-            <Card style={{ width: "100%", gap: spacing.sm }}>
-                <Text style={styles.fieldLabel}>Grind setting</Text>
-                <TextInput
-                    style={styles.textInput}
-                    value={grindNote}
-                    onChangeText={setGrindNote}
-                    placeholder={grind}
-                    placeholderTextColor={colors.textMuted}
-                />
-            </Card>
-
-            <Card style={{ width: "100%", gap: spacing.sm }}>
-                <Text style={styles.fieldLabel}>Notes</Text>
-                <TextInput
-                    style={[styles.textInput, styles.notesInput]}
-                    value={notes}
-                    onChangeText={setNotes}
-                    placeholder="Tasting notes, tweaks, ideas..."
-                    placeholderTextColor={colors.textMuted}
-                    multiline
-                    textAlignVertical="top"
-                />
-            </Card>
-
-            <Pressable
-                style={[styles.saveButton, !canSave && styles.saveButtonDisabled]}
-                onPress={handleSave}
-                disabled={!canSave}
+            <ScrollView
+                style={styles.screen}
+                contentContainerStyle={styles.content}
+                keyboardShouldPersistTaps="handled"
             >
-                <Text style={styles.saveButtonText}>
-                    {isSaving ? "Saving..." : "Save"}
+                {recipe && (
+                    <Text style={styles.recipeName}>{recipe.name}</Text>
+                )}
+                <Text style={styles.meta}>
+                    {dose}g  ·  {water} ml
                 </Text>
-            </Pressable>
-        </ScrollView>
+
+                <Card style={{width: "100%", gap: spacing.sm }}>
+                    <Text style={styles.fieldLabel}>How was your brew?</Text>
+                    <View style={styles.starsRow}>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <Pressable
+                                key={star}
+                                onPress={() => setRating(star)}
+                                hitSlop={8}
+                            >
+                                <Text
+                                    style={[
+                                        styles.star,
+                                        star <= rating && styles.starFilled,
+                                    ]}
+                                >
+                                    ★
+                                </Text>
+                            </Pressable>
+                        ))}
+                    </View>
+                </Card>
+
+                <Card style={{ width: "100%", gap: spacing.sm }}>
+                    <Text style={styles.fieldLabel}>Grind setting</Text>
+                    <TextInput
+                        style={styles.textInput}
+                        value={grindNote}
+                        onChangeText={setGrindNote}
+                        placeholder={grind}
+                        placeholderTextColor={colors.textMuted}
+                    />
+                </Card>
+
+                <Card style={{ width: "100%", gap: spacing.sm }}>
+                    <Text style={styles.fieldLabel}>Notes</Text>
+                    <TextInput
+                        style={[styles.textInput, styles.notesInput]}
+                        value={notes}
+                        onChangeText={setNotes}
+                        placeholder="Tasting notes, tweaks, ideas..."
+                        placeholderTextColor={colors.textMuted}
+                        multiline
+                        textAlignVertical="top"
+                    />
+                </Card>
+
+                <Pressable
+                    style={[styles.saveButton, !canSave && styles.saveButtonDisabled]}
+                    onPress={handleSave}
+                    disabled={!canSave}
+                >
+                    <Text style={styles.saveButtonText}>
+                        {isSaving ? "Saving..." : "Save"}
+                    </Text>
+                </Pressable>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 

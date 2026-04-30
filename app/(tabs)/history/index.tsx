@@ -18,21 +18,31 @@ type Section = {
 };
 
 
-// Groups brew logs by year, descending
-function useGroupedByYear(logs: BrewLogEntry[]): Section[] {
+// Groups brew logs by month, descending (most recent first)
+function useGroupedByMonth(logs: BrewLogEntry[]): Section[] {
     return useMemo(() => {
-        const map = new Map<string, BrewLogEntry[]>();
+        const map = new Map<string, { label: string; entries: BrewLogEntry[] }>();
 
         for (const log of logs) {
-            const year = new Date(log.brewedAt).getFullYear().toString();
-            if (!map.has(year)) map.set(year, []);
-            map.get(year)!.push(log);
+            const date = new Date(log.brewedAt);
+            // "2026-04" format — sorts chronologically as a string
+            const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+            if (!map.has(key)) {
+                // Human-readable label: "April 2026"
+                const label = date.toLocaleDateString(undefined, {
+                    month: "long",
+                    year: "numeric",
+                });
+                map.set(key, { label, entries: [] });
+            }
+            map.get(key)!.entries.push(log);
         }
 
-        // Sort years descending (most recent first)
+        // Sort keys descending (most recent month first)
         return Array.from(map.entries())
-            .sort(([a], [b]) => Number(b) - Number(a))
-            .map(([title, data]) => ({ title, data }));
+            .sort(([a], [b]) => b.localeCompare(a))
+            .map(([, { label, entries }]) => ({ title: label, data: entries }));
     }, [logs]);
 }
 
@@ -41,7 +51,7 @@ export default function HistoryList() {
     const router = useRouter();
     const [logs, setLogs] = useState<BrewLogEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const sections = useGroupedByYear(logs);
+    const sections = useGroupedByMonth(logs);
 
     useEffect(() => {
         if (!user) return;
@@ -96,29 +106,31 @@ export default function HistoryList() {
 
                 return (
                     <Pressable onPress={() => router.push(`/(tabs)/history/${item.id}`)}>
-                        <Card style={styles.card}>
-                            <View style={styles.dateColumn}>
-                                <Text style={styles.dateDay}>{day}</Text>
-                                <Text style={styles.dateMonth}>{month}</Text>
-                            </View>
+                        {({pressed}) => (
+                            <Card pressed={pressed} style={styles.card}>
+                                <View style={styles.dateColumn}>
+                                    <Text style={styles.dateDay}>{day}</Text>
+                                    <Text style={styles.dateMonth}>{month}</Text>
+                                </View>
 
-                            <View style={styles.verticalDivider} />
+                                <View style={styles.verticalDivider} />
 
-                            <View style={styles.contentColumn}>
-                                <Text style={styles.subtitle} numberOfLines={1}>
-                                    {recipe?.method ?? "Brew"}  ·  {item.dose}g  ·  {item.water}ml
-                                </Text>
-                                <Text style={styles.recipeName} numberOfLines={1}>
-                                    {recipe?.name ?? "Unknown recipe"}
-                                </Text>
-                                <Text style={styles.stars}>
-                                    {"★".repeat(item.rating)}
-                                    {"☆".repeat(5 - item.rating)}
-                                </Text>
-                            </View>
+                                <View style={styles.contentColumn}>
+                                    <Text style={styles.subtitle} numberOfLines={1}>
+                                        {recipe?.method ?? "Brew"}  ·  {item.dose}g  ·  {item.water}ml
+                                    </Text>
+                                    <Text style={styles.recipeName} numberOfLines={1}>
+                                        {recipe?.name ?? "Unknown recipe"}
+                                    </Text>
+                                    <Text style={styles.stars}>
+                                        {"★".repeat(item.rating)}
+                                        {"☆".repeat(5 - item.rating)}
+                                    </Text>
+                                </View>
 
-                            <Chevron />
-                        </Card>
+                                <Chevron />
+                            </Card>
+                        )}
                     </Pressable>
                 )
         }} />

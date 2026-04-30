@@ -1,129 +1,283 @@
-[{
-  "id": "hoffman-v60",
-  "name": "James Hoffmann's V60 Method",
-  "source": "James Hoffmann",
-  "description": "James Hoffmann's v60 technique.",
-  "method": "pourover",
-  "baseServings": 2,
-  "baseDoseGrams": 30,
-  "baseWaterMl": 500,
-  "grind": "Medium fine",
-  "waterTempCelsius": 100,
-  "steps": [
-    {
-      "label": "Bloom",
-      "durationSeconds": 45,
-      "waterMl": 60,
-      "instruction": "Pour twice the dose weight in water. Spiral pour from the centre outwards. Swirl the brewer until the mixture is even. Let bloom."
-    },
-    {
-      "label": "First pour",
-      "durationSeconds": 30,
-      "waterMl": 240,
-      "instruction": "Pour slowly from centre outwards and then concentrically."
-    },
-    {
-      "label": "Second pour",
-      "durationSeconds": 30,
-      "waterMl": 200,
-      "instruction": "Pour concentrically until you reach the total. Give the slurry a gentle swirl."
-    },
-    {
-      "label": "Drawdown",
-      "durationSeconds": 75,
-      "instruction": "Wait until the coffee has fully drained."
-    }
-  ]
-},
-{
-  "id": "kasuya-46",
-  "name": "Tetsu Kasuya's 4:6 Method",
-  "source": "Tetsu Kasuya",
-  "description": "Tetsu Kasuya's 4:6 method. This medium variant uses equal first pours for balanced acidity/sweetness, and two second pours for medium strength.",
-  "method": "pourover",
-  "baseServings": 1,
-  "baseDoseGrams": 20,
-  "baseWaterMl": 300,
-  "grind": "Coarse",
-  "waterTempCelsius": 92,
-  "steps": [
-    {
-      "label": "First pour",
-      "durationSeconds": 45,
-      "waterMl": 60,
-      "instruction": "Spiral pour from the centre outwards and back to the centre to wet all the coffee. Wait until the water drains."
-    },
-    {
-      "label": "Second pour",
-      "durationSeconds": 45,
-      "waterMl": 60,
-      "instruction": "Spiral pour from the centre outwards and back to the centre. Wait until the water drains."
-    },
-    {
-      "label": "Third pour",
-      "durationSeconds": 45,
-      "waterMl": 90,
-      "instruction": "Spiral pour from the centre outwards and back to the centre. Wait until the water drains."
-    },
-    {
-      "label": "Fourth pour",
-      "durationSeconds": 45,
-      "waterMl": 90,
-      "instruction": "Final pour to reach the total water amount. Wait until the water drains."
-    },
-    {
-      "label": "Drawdown",
-      "durationSeconds": 60,
-      "instruction": "Wait until the coffee has fully drained."
-    }
-  ]
-},
-{
-  "id": "wuggy-french-press",
-  "name": "Wuggy's French Press Recipe",
-  "source": "Ari-Matti Toivonen",
-  "description": "Wuggy's French Press method.",
-  "method": "french press",
-  "baseDoseGrams": 30,
-  "baseWaterMl": 500,
-  "baseServings": 2,
-  "grind": "Coarse",
-  "waterTempCelsius": 98,
-  "steps": [
-    {
-      "label": "Pour",
-      "durationSeconds": 15,
-      "waterMl": 500,
-      "instruction": "Pour all the water over the grounds."
-    },
-    {
-      "label": "Steep",
-      "durationSeconds": 240,
-      "instruction": "Do nothing. Let it sit with the lid off."
-    },
-    {
-      "label": "Break crust",
-      "durationSeconds": 30,
-      "instruction": "Break the crust with a plunger, gently. Don't plunge all the way."
-    },
-    {
-      "label": "Wait",
-      "durationSeconds": 300,
-      "instruction": "Let the coffee settle."
-    },
-    {
-      "label": "Plunge & pour",
-      "durationSeconds": 15,
-      "instruction": "Press the plunger gently and slowly."
-    }
-  ]
-},
+[
   {
-    "id": "test-recipe",
-    "name": "Test Recipe",
-    "source": "Test",
-    "description": "This is for testing purposes",
+    "id": "hoffmann-v60",
+    "name": "James Hoffmann's V60 Method",
+    "source": "James Hoffmann",
+    "description": "The 'Ultimate V60 Technique' by 2007 World Barista Champion James Hoffmann. A two-pour method with a bloom, emphasizing high temperature and gentle agitation for a clean, sweet cup.",
+    "method": "pourover",
+    "baseServings": 2,
+    "baseDoseGrams": 30,
+    "baseWaterMl": 500,
+    "grind": "Medium fine",
+    "waterTempCelsius": 100,
+    "steps": [
+      {
+        "label": "Bloom",
+        "durationSeconds": 45,
+        "waterMl": 60,
+        "instruction": "Pour twice the dose weight in water. Spiral pour from the centre outwards. Swirl the brewer until the mixture is even. Let bloom."
+      },
+      {
+        "label": "First pour",
+        "durationSeconds": 30,
+        "waterMl": 240,
+        "instruction": "Pour slowly from centre outwards and then concentrically."
+      },
+      {
+        "label": "Second pour",
+        "durationSeconds": 30,
+        "waterMl": 200,
+        "instruction": "Pour concentrically until you reach the total. Give the slurry a gentle swirl."
+      },
+      {
+        "label": "Drawdown",
+        "durationSeconds": 75,
+        "instruction": "Wait until the coffee has fully drained. Gently stir in both directions, then swirl the brewer to flatten the bed."
+      }
+    ]
+  },
+  {
+    "id": "kasuya-46",
+    "name": "Tetsu Kasuya's 4:6 Method",
+    "source": "Tetsu Kasuya",
+    "description": "The 4:6 method by 2016 World Brewers Cup Champion Tetsu Kasuya. Splits the brew water into a 40/60 ratio across five pours. The first two pours control sweetness vs. acidity; the last three control strength. This balanced variant uses equal first pours and two final pours for medium strength.",
+    "method": "pourover",
+    "baseServings": 1,
+    "baseDoseGrams": 20,
+    "baseWaterMl": 300,
+    "grind": "Coarse",
+    "waterTempCelsius": 92,
+    "steps": [
+      {
+        "label": "First pour",
+        "durationSeconds": 45,
+        "waterMl": 60,
+        "instruction": "Spiral pour from the centre outwards and back to the centre to wet all the coffee. Wait until the water drains."
+      },
+      {
+        "label": "Second pour",
+        "durationSeconds": 45,
+        "waterMl": 60,
+        "instruction": "Spiral pour from the centre outwards and back to the centre. Wait until the water drains."
+      },
+      {
+        "label": "Third pour",
+        "durationSeconds": 45,
+        "waterMl": 90,
+        "instruction": "Spiral pour from the centre outwards and back to the centre. Wait until the water drains."
+      },
+      {
+        "label": "Fourth pour",
+        "durationSeconds": 45,
+        "waterMl": 90,
+        "instruction": "Final pour to reach the total water amount. Wait until the water drains."
+      },
+      {
+        "label": "Drawdown",
+        "durationSeconds": 60,
+        "instruction": "Wait until the coffee has fully drained."
+      }
+    ]
+  },
+  {
+    "id": "rao-v60",
+    "name": "Scott Rao's V60 Method",
+    "source": "Scott Rao",
+    "description": "Coffee consultant and author Scott Rao's V60 technique, famous for the 'Rao Spin' — a gentle swirl of the brewer that levels the coffee bed for a more even extraction. Uses a single main pour after the bloom for simplicity.",
+    "method": "pourover",
+    "baseServings": 1,
+    "baseDoseGrams": 22,
+    "baseWaterMl": 360,
+    "grind": "Medium fine",
+    "waterTempCelsius": 96,
+    "steps": [
+      {
+        "label": "Bloom",
+        "durationSeconds": 45,
+        "waterMl": 66,
+        "instruction": "Pour three times the coffee dose weight in water. Stir gently with a spoon to make sure all grounds are wet."
+      },
+      {
+        "label": "Main pour",
+        "durationSeconds": 30,
+        "waterMl": 294,
+        "instruction": "Pour in concentric circles until you reach the total water weight."
+      },
+      {
+        "label": "Stir & spin",
+        "durationSeconds": 15,
+        "instruction": "Gently stir to knock any grounds clinging to the filter walls. Then give the V60 a gentle swirl — the 'Rao Spin' — to flatten the coffee bed."
+      },
+      {
+        "label": "Drawdown",
+        "durationSeconds": 90,
+        "instruction": "Wait for the coffee to fully drain. Target a flat, even bed of grounds at the bottom."
+      }
+    ]
+  },
+  {
+    "id": "hoffmann-chemex",
+    "name": "James Hoffmann's Chemex Method",
+    "source": "James Hoffmann",
+    "description": "Hoffmann's Chemex technique, closely mirroring his V60 method but adapted for the thicker Chemex filter paper and larger batch size. Produces a very clean, bright cup.",
+    "method": "pourover",
+    "baseServings": 2,
+    "baseDoseGrams": 30,
+    "baseWaterMl": 500,
+    "grind": "Medium",
+    "waterTempCelsius": 95,
+    "steps": [
+      {
+        "label": "Bloom",
+        "durationSeconds": 45,
+        "waterMl": 75,
+        "instruction": "Pour water in the center, spiraling outwards. Stir to wet all grounds. Let bloom."
+      },
+      {
+        "label": "First pour",
+        "durationSeconds": 30,
+        "waterMl": 225,
+        "instruction": "Pour in a circular motion, breaking up any clumps."
+      },
+      {
+        "label": "Second pour",
+        "durationSeconds": 30,
+        "waterMl": 200,
+        "instruction": "Continue pouring in circles until you reach the total water weight."
+      },
+      {
+        "label": "Stir & settle",
+        "durationSeconds": 15,
+        "instruction": "Stir once clockwise, then counter-clockwise. Give the Chemex a gentle swirl."
+      },
+      {
+        "label": "Drawdown",
+        "durationSeconds": 120,
+        "instruction": "Wait for the drawdown to complete. Total brew time should be around 4 minutes."
+      }
+    ]
+  },
+  {
+    "id": "adler-aeropress",
+    "name": "Alan Adler's Original AeroPress",
+    "source": "Alan Adler",
+    "description": "The original recipe from AeroPress inventor Alan Adler, included in the AeroPress packaging. A quick, simple method using lower temperature water and a fine grind that produces a smooth concentrate. Dilute with hot water for an Americano or add milk for a latte.",
     "method": "aeropress",
+    "baseServings": 1,
+    "baseDoseGrams": 15,
+    "baseWaterMl": 90,
+    "grind": "Fine",
+    "waterTempCelsius": 80,
+    "steps": [
+      {
+        "label": "Pour",
+        "durationSeconds": 10,
+        "waterMl": 90,
+        "instruction": "Pour hot water into the chamber to level 1 on the AeroPress."
+      },
+      {
+        "label": "Stir",
+        "durationSeconds": 10,
+        "instruction": "Stir for about 10 seconds to make sure all grounds are fully saturated."
+      },
+      {
+        "label": "Press",
+        "durationSeconds": 30,
+        "instruction": "Insert the plunger and press gently. Pause when you feel resistance, then continue until the plunger reaches the grounds."
+      },
+      {
+        "label": "Dilute",
+        "durationSeconds": 10,
+        "instruction": "This is a concentrate. Add hot water to taste for an Americano, or milk for a latte."
+      }
+    ]
+  },
+  {
+    "id": "hoffmann-aeropress",
+    "name": "James Hoffmann's Ultimate AeroPress",
+    "source": "James Hoffmann",
+    "description": "Hoffmann's 'Ultimate AeroPress Technique' — a surprisingly simple recipe. Standard (non-inverted) position, no preheating, no filter rinsing. A gentle swirl replaces stirring. Light and sweet result, great starting point for experimentation.",
+    "method": "aeropress",
+    "baseServings": 1,
+    "baseDoseGrams": 11,
+    "baseWaterMl": 200,
+    "grind": "Medium fine",
+    "waterTempCelsius": 100,
+    "steps": [
+      {
+        "label": "Pour",
+        "durationSeconds": 10,
+        "waterMl": 200,
+        "instruction": "Pour all the water in one go, aiming to wet all the coffee."
+      },
+      {
+        "label": "Steep",
+        "durationSeconds": 120,
+        "instruction": "Immediately place the plunger about 1 cm into the brewer to create a vacuum seal. This stops the coffee from dripping through. Wait 2 minutes."
+      },
+      {
+        "label": "Swirl",
+        "durationSeconds": 10,
+        "instruction": "Holding the brewer and plunger together, gently swirl the brewer to knock the grounds off the surface."
+      },
+      {
+        "label": "Settle",
+        "durationSeconds": 30,
+        "instruction": "Wait 30 seconds for the grounds to sink to the bottom."
+      },
+      {
+        "label": "Press",
+        "durationSeconds": 30,
+        "instruction": "Press gently all the way. You can pause when you hit resistance, then continue."
+      }
+    ]
+  },
+  {
+    "id": "hoffmann-french-press",
+    "name": "James Hoffmann's French Press",
+    "source": "James Hoffmann",
+    "description": "Hoffmann's French Press technique produces a cleaner, less silty cup than the traditional method. The key: after steeping, you break the crust, skim the foam, then wait for the grounds to sink before pouring. Don't plunge all the way down.",
+    "method": "french_press",
+    "baseServings": 2,
+    "baseDoseGrams": 30,
+    "baseWaterMl": 500,
+    "grind": "Medium coarse",
+    "waterTempCelsius": 100,
+    "steps": [
+      {
+        "label": "Pour",
+        "durationSeconds": 15,
+        "waterMl": 500,
+        "instruction": "Pour all the water over the grounds."
+      },
+      {
+        "label": "Steep",
+        "durationSeconds": 225,
+        "instruction": "Let it steep undisturbed with the lid off. Don't stir, don't touch it."
+      },
+      {
+        "label": "Break & skim",
+        "durationSeconds": 30,
+        "instruction": "Stir the crust on top with a spoon to break it. Then use two spoons to scoop off any foam and floating grounds."
+      },
+      {
+        "label": "Settle",
+        "durationSeconds": 300,
+        "instruction": "Let the coffee sit for 5 minutes. The remaining grounds will slowly sink to the bottom."
+      },
+      {
+        "label": "Plunge & pour",
+        "durationSeconds": 15,
+        "instruction": "Place the plunger just above the surface of the liquid. Do not press down to the bottom — just use it as a strainer. Pour gently."
+      }
+    ]
+  },
+  {
+    "id": "wuggy-french-press",
+    "name": "Wuggy's French Press",
+    "source": "Ari-Matti Toivonen",
+    "description": "A straightforward French Press method. Full immersion with a long settle time for a clean cup. Similar in spirit to Hoffmann's approach but with a quicker crust break and longer final rest.",
+    "method": "french_press",
     "baseDoseGrams": 30,
     "baseWaterMl": 500,
     "baseServings": 2,
@@ -131,15 +285,30 @@
     "waterTempCelsius": 98,
     "steps": [
       {
-        "label": "First step",
-        "durationSeconds": 10,
+        "label": "Pour",
+        "durationSeconds": 15,
         "waterMl": 500,
-        "instruction": "First test step."
+        "instruction": "Pour all the water over the grounds."
       },
       {
-        "label": "Second step",
-        "durationSeconds": 10,
-        "instruction": "Second test step."
+        "label": "Steep",
+        "durationSeconds": 240,
+        "instruction": "Do nothing. Let it sit with the lid off."
+      },
+      {
+        "label": "Break crust",
+        "durationSeconds": 30,
+        "instruction": "Break the crust with a plunger, gently. Don't plunge all the way."
+      },
+      {
+        "label": "Wait",
+        "durationSeconds": 300,
+        "instruction": "Let the coffee settle."
+      },
+      {
+        "label": "Plunge & pour",
+        "durationSeconds": 15,
+        "instruction": "Press the plunger gently and slowly."
       }
     ]
   }

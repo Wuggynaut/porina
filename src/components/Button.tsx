@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from "react-native";
+import {Pressable, Text, TextStyle, ViewStyle} from "react-native";
 import {colors, radius, spacing, typography} from "../theme";
 
 type ButtonProps = {
@@ -9,11 +9,11 @@ type ButtonProps = {
     labelStyle?: TextStyle;
 }
 
-export default function Button ({label, onPress, size = 'md', buttonStyle, labelStyle}: ButtonProps) {
+export default function Button({label, onPress, size = 'md', buttonStyle, labelStyle}: ButtonProps) {
     let buttonSize = null;
     let fontSize = null;
 
-    switch (size){
+    switch (size) {
         case 'md':
             buttonSize = spacing.md;
             fontSize = 16;
@@ -29,25 +29,28 @@ export default function Button ({label, onPress, size = 'md', buttonStyle, label
     }
 
     return (
-        <Pressable style={[{
-            borderRadius: radius.sm,
-            backgroundColor: colors.coral,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 24,
-            paddingVertical: buttonSize,
-        }, buttonStyle
-        ]}
-        onPress={onPress}
+        <Pressable
+            style={({pressed}) => [
+                {
+                    borderRadius: radius.sm,
+                    backgroundColor: colors.coral,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingHorizontal: 24,
+                    paddingVertical: buttonSize,
+                },
+                pressed && { opacity: 0.75 },
+                buttonStyle,
+            ]}
+            onPress={onPress}
         >
             <Text style={[{
                 ...typography.cardMetaBold,
                 color: colors.white,
                 fontSize: fontSize,
-            }, labelStyle
-            ]}>
+            }, labelStyle]}>
                 {label}
             </Text>
         </Pressable>
-    )
+    );
 }

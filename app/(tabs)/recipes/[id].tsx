@@ -59,14 +59,20 @@ export default function RecipeScreen() {
                 <SectionHeader title={"Ingredients"} />
                 <View style={styles.servingGroup}>
                     <Pressable
-                        style={styles.roundButton}
+                        style={({pressed}) => [
+                            styles.roundButton,
+                            pressed && { opacity: 0.6 },
+                        ]}
                         onPress={() => changeServing(-1)}
                     >
                         <Minus size={28} strokeWidth={3} color={"white"} />
                     </Pressable>
                     <Text style={styles.ingredientTextSecondary}>{servings} cups</Text>
                     <Pressable
-                        style={styles.roundButton}
+                        style={({pressed}) => [
+                            styles.roundButton,
+                            pressed && { opacity: 0.6 },
+                        ]}
                         onPress={() => changeServing(1)}
                     >
                         <Plus size={28} strokeWidth={3} color={"white"} />

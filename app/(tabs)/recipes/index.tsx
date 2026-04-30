@@ -38,31 +38,34 @@ export default function Recipes() {
                     return (
                         <Link href={`/recipes/${item.id}`} asChild>
                             <Pressable>
-                                <Card style={{flexDirection: "row"}}>
-                                    <Pressable
-                                        onPress={(e) => {
-                                            e.preventDefault();
-                                            toggleFavorite(item.id);
-                                        }}
-                                        hitSlop={8}
-                                    >
-                                        <Ionicons name={isFav ? "heart" : "heart-outline"} size={30}
-                                                  color={isFav ? colors.coral : colors.textPrimary}/>
-                                    </Pressable>
-                                    <View style={styles.cardBody}>
-                                        <View style={{alignSelf: "flex-start"}}>
-                                            <Text style={styles.recipeName}>{item.name}</Text>
+                                {({pressed}) => (
+                                    <Card pressed={pressed} style={{flexDirection: "row"}}>
+                                        <Pressable
+                                            onPress={(e) => {
+                                                e.preventDefault();
+                                                toggleFavorite(item.id);
+                                            }}
+                                            hitSlop={8}
+                                        >
+                                            <Ionicons name={isFav ? "heart" : "heart-outline"} size={30}
+                                                      color={isFav ? colors.coral : colors.textPrimary}/>
+                                        </Pressable>
+                                        <View style={styles.cardBody}>
+                                            <View style={{alignSelf: "flex-start"}}>
+                                                <Text style={styles.recipeName}>{item.name}</Text>
+                                            </View>
+
+                                            <View style={[styles.cardDivider]}/>
+                                            <Text style={styles.recipeMeta}>
+                                                {item.source} <Text
+                                                style={{fontWeight: "800"}}>·</Text> 1:{(item.baseWaterMl / item.baseDoseGrams).toFixed(1)}
+                                            </Text>
                                         </View>
 
-                                        <View style={[styles.cardDivider]}/>
-                                        <Text style={styles.recipeMeta}>
-                                            {item.source} <Text
-                                            style={{fontWeight: "800"}}>·</Text> 1:{(item.baseWaterMl / item.baseDoseGrams).toFixed(1)}
-                                        </Text>
-                                    </View>
+                                        <Chevron />
+                                    </Card>
+                                )}
 
-                                    <Chevron />
-                                </Card>
                             </Pressable>
                         </Link>
                     )
